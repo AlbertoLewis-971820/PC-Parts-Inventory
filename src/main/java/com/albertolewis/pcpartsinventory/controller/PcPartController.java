@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pcparts")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PcPartController {
 
     private final PcPartService pcPartService;

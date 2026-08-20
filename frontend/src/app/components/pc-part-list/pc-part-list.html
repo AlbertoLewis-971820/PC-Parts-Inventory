@@ -1,0 +1,15 @@
+<h1>PC Part List</h1>
+<p>Number of PC parts: {{ pcParts().length }}</p>
+<h2>PC Parts</h2>
+<ul class="pc-part-list">
+  @for (part of pcParts(); track part.id){
+    <li class="pc-part-item">
+      <p>Name: {{ part.name }}</p>
+      <p>Category: {{ part.category }}</p>
+      <p>Manufacturer: {{ part.manufacturer }}</p>
+      <p>Price: ${{ part.price }}</p>
+      <p>Quantity: {{ part.quantity }}</p>
+    </li>
+  }
+</ul>
+
