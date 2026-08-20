@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { PcPart } from '../../models/pc-part';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { PcPartService } from '../../services/pc-part-service';
+
 
 @Component({
   selector: 'app-pc-part-form',
@@ -18,5 +20,30 @@ export class PcPartForm {
     quantity: 0
   };
 
+@Output()
+partAdded = new EventEmitter<PcPart>();
+
+  constructor(private pcPartService: PcPartService) { }
+addPcPart(partForm: NgForm): void {
+  this.pcPartService.addPcPart(this.newPcPart).subscribe({
+    next: (data: PcPart) => {
+      console.log('Added new PC part:', data);
+      this.partAdded.emit(data);
+
+      this.newPcPart = {
+        name: '',
+        category: '',
+        manufacturer: '',
+        price: 0,
+        quantity: 0
+      };
+
+      partForm.resetForm(this.newPcPart);
+    },
+    error: (error) => {
+      console.error('Error adding new PC part:', error);
+    }
+  });
+}
 
 }

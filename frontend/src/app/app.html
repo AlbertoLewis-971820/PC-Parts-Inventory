@@ -1,2 +1,7 @@
-<app-pc-part-list></app-pc-part-list>
-<app-pc-part-form></app-pc-part-form>
+
+<main>
+  <app-pc-part-form (partAdded)="partList.addPart($event)"></app-pc-part-form>
+  <app-pc-part-list #partList></app-pc-part-list>
+</main>
+
+

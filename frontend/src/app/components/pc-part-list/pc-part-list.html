@@ -1,15 +1,80 @@
-<h1>PC Part List</h1>
-<p>Number of PC parts: {{ pcParts().length }}</p>
-<h2>PC Parts</h2>
-<ul class="pc-part-list">
-  @for (part of pcParts(); track part.id){
-    <li class="pc-part-item">
-      <p>Name: {{ part.name }}</p>
-      <p>Category: {{ part.category }}</p>
-      <p>Manufacturer: {{ part.manufacturer }}</p>
-      <p>Price: ${{ part.price }}</p>
-      <p>Quantity: {{ part.quantity }}</p>
-    </li>
-  }
-</ul>
+<h1>PC Part Inventory</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Manufacturer</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (part of pcParts(); track part.id){
+      <tr>
+
+        @if (editingPart?.id === part.id) {
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="editingPart!.name"
+            name="edit-name"
+          />
+        </td>
+
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="editingPart!.category"
+            name="edit-category"
+          />
+        </td>
+
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="editingPart!.manufacturer"
+            name="edit-manufacturer"
+          />
+        </td>
+
+        <td>
+          <input
+            type="number"
+            [(ngModel)]="editingPart!.price"
+            name="edit-price"
+          />
+        </td>
+
+        <td>
+          <input
+            type="number"
+            [(ngModel)]="editingPart!.quantity"
+            name="edit-quantity"
+          />
+        </td>
+
+        <td>
+          <button (click)="saveEditing()">Save</button>
+          <button (click)="cancelEditing()">Cancel</button>
+        </td>
+        } @else{
+            <td>{{ part.name }}</td>
+            <td>{{ part.category }}</td>
+            <td>{{ part.manufacturer }}</td>
+            <td>${{ part.price }}</td>
+            <td>{{ part.quantity }}</td>
+            <td>
+              <button (click)="startEditing(part)">Edit</button>
+              <button (click)="deletePcPart(part.id)">Delete</button>
+            </td>
+
+          }
+      </tr>
+
+    }
+  </tbody>
+</table>
+
 

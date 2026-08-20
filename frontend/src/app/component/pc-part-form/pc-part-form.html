@@ -1,10 +1,56 @@
 <h2>Add a PC Part</h2>
 
-<label for="name">Name:</label>
-<input
-  id="name"
-  type="text"
-  name="name"
-  [(ngModel)]="newPcPart.name"
-  >
-<p>You entered: {{newPcPart.name}}</p>
+<form #partForm="ngForm" (ngSubmit)="addPcPart(partForm)">
+  <div>
+    <label for="name">Name:</label>
+    <input
+      id="name"
+      type="text"
+      name="name"
+      [(ngModel)]="newPcPart.name"
+    />
+  </div>
+
+  <div>
+    <label for="category">Category:</label>
+    <input
+      id="category"
+      type="text"
+      name="category"
+      [(ngModel)]="newPcPart.category"
+    />
+  </div>
+
+  <div>
+    <label for="manufacturer">Manufacturer:</label>
+    <input
+      id="manufacturer"
+      type="text"
+      name="manufacturer"
+      [(ngModel)]="newPcPart.manufacturer"
+    />
+  </div>
+
+  <div>
+    <label for="price">Price:</label>
+    <input
+      id="price"
+      type="number"
+      name="price"
+      [(ngModel)]="newPcPart.price"
+    />
+  </div>
+
+  <div>
+    <label for="quantity">Quantity:</label>
+    <input
+      id="quantity"
+      type="number"
+      name="quantity"
+      [(ngModel)]="newPcPart.quantity"
+    />
+  </div>
+
+  <button type="submit">Add PC Part</button>
+</form>
+

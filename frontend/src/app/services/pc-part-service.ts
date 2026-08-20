@@ -20,4 +20,14 @@ export class PcPartService {
     return this.httpClient.post<PcPart>(this.apiUrl, pcPart);
   }
 
+  deletePcPart(id: number): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.httpClient.delete<void>(url);
+  }
+
+  updatePcPart(id: number, pcPart: PcPart): Observable<PcPart> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.httpClient.put<PcPart>(url, pcPart);
+  }
+
 }
