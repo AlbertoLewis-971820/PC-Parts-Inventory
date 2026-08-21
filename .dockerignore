@@ -1,0 +1,10 @@
+target
+frontend/node_modules
+frontend/.angular/
+.idea/
+.git/
+.gitignore
+*.iml
+.DS_Store
+
+

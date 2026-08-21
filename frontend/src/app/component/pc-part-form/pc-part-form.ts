@@ -20,6 +20,8 @@ export class PcPartForm {
     quantity: 0
   };
 
+  errorMessage: string = '';
+
 @Output()
 partAdded = new EventEmitter<PcPart>();
 
@@ -39,9 +41,10 @@ addPcPart(partForm: NgForm): void {
       };
 
       partForm.resetForm(this.newPcPart);
+      this.errorMessage = 'PC part added successfully!';
     },
     error: (error) => {
-      console.error('Error adding new PC part:', error);
+      this.errorMessage = 'Error adding new PC part. Please try again.';
     }
   });
 }

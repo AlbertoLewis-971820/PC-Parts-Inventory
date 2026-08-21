@@ -1,5 +1,4 @@
-<h2>Add a PC Part</h2>
-
+<h1>PC Part Inventory</h1>
 <form #partForm="ngForm" (ngSubmit)="addPcPart(partForm)">
   <div>
     <label for="name">Name:</label>
@@ -52,5 +51,8 @@
   </div>
 
   <button type="submit">Add PC Part</button>
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
 </form>
 
