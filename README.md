@@ -4,7 +4,8 @@ A full-stack inventory management application for tracking PC components. The ap
 
 The entire application can be run using Docker Compose.
 
-![img.png](img.png)
+## Screenshot
+![PC Parts Inventory](screenshots/PC-Part-Inventory-UI.png)
 
 ## Features
 
