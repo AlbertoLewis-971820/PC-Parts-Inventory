@@ -40,6 +40,13 @@ public class PcPartService {
             return false;
         }
     }
+    //Find all pc parts below threshold
+    public List<PcPart> getAllByQuantityLessThan(int threshold){
+        if(threshold < 0){
+            throw new IllegalArgumentException("Threshold must be a non-negative integer.");
+        }
+        return pcPartRepository.findAllByQuantityLessThan(threshold);
+    }
 
     //Update a pc part by id
     public Optional<PcPart> updatePcPart(Long id, PcPart pcPart) {

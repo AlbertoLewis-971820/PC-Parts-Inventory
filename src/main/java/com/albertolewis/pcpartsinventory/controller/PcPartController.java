@@ -43,6 +43,12 @@ public class PcPartController {
         }
     }
 
+    @GetMapping("/low-stock")
+    public List<PcPart> getAllByQuantityLessThan(@RequestParam Integer threshold) {
+        return pcPartService.getAllByQuantityLessThan(threshold);
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<PcPart> updatePcPart(@PathVariable Long id, @Valid @RequestBody PcPart pcPart) {
         Optional<PcPart> updatedPcPart = pcPartService.updatePcPart(id, pcPart);
