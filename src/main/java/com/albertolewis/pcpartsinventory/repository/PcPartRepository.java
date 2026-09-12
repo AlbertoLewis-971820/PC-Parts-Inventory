@@ -9,4 +9,8 @@ public interface PcPartRepository extends JpaRepository<PcPart, Long> {
 
     //Grab pc parts that are below a certain threshold
     List<PcPart> findAllByQuantityLessThan(int threshold);
+
+    //Grab all pc parts by manufacturer name
+    List<PcPart> findAllByManufacturerIgnoreCase(String manufacturer);
+
 }

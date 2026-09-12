@@ -48,6 +48,12 @@ public class PcPartController {
         return pcPartService.getAllByQuantityLessThan(threshold);
     }
 
+    //Find all pc parts by manufacturer name
+    @GetMapping("/manufacturer")
+    public List<PcPart> getAllByManufacturer(@RequestParam String name) {
+        return pcPartService.getAllByManufacturer(name);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<PcPart> updatePcPart(@PathVariable Long id, @Valid @RequestBody PcPart pcPart) {

@@ -48,6 +48,14 @@ public class PcPartService {
         return pcPartRepository.findAllByQuantityLessThan(threshold);
     }
 
+    //Find all pc parts by manufacturer name
+    public List<PcPart> getAllByManufacturer(String name) {
+        if(name == null || name.isBlank()){
+            throw new IllegalArgumentException("Manufacturer cannot be null or empty.");
+        }
+        return pcPartRepository.findAllByManufacturerIgnoreCase(name);
+    }
+
     //Update a pc part by id
     public Optional<PcPart> updatePcPart(Long id, PcPart pcPart) {
         return pcPartRepository.findById(id)
