@@ -59,10 +59,17 @@ public class PcPartService {
 
     //Find all pc parts by category
     public List<PcPart> getAllByCategory(String name){
+
         if(name == null || name.isBlank()){
             throw new IllegalArgumentException("Category cannot be null or empty.");
         }
-        PartsCategory category = PartsCategory.valueOf(name.strip().toUpperCase());
+        String normalizedName = name.strip().toUpperCase();
+        PartsCategory category;
+        try{
+            category = PartsCategory.valueOf(normalizedName);
+        }catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid category: " + normalizedName);
+        }
         return pcPartRepository.findAllByCategory(category);
     }
 

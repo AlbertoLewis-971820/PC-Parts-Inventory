@@ -6,6 +6,7 @@ import com.albertolewis.pcpartsinventory.repository.PcPartRepository;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -67,7 +68,7 @@ public class PcPartServiceTest {
                 .thenReturn(List.of(pcParts));
 
         //Act
-        List<PcPart> result = pcPartService.getAllByCategory("gpu");
+        List<PcPart> result = pcPartService.getAllByCategory("  gpu  ");
 
         //Assert
         assertEquals(1,result.size());
@@ -137,6 +138,38 @@ public class PcPartServiceTest {
         //Verify
         verify(pcPartRepository, never()).findAllByManufacturerIgnoreCase(anyString());
 
+    }
+
+    @Test
+    void getAllByCategory_blankName_throwsException(){
+        //Arrange
+        String category = " ";
+
+        //Act and Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            pcPartService.getAllByCategory(category);
+        });
+
+        assertEquals("Category cannot be null or empty.", exception.getMessage());
+
+        //Verify
+        verify(pcPartRepository,never()).findAllByCategory(any(PartsCategory.class));
+    }
+
+    @Test
+    void getAllByCategory_returnInvalidCategoryName_throwsException(){
+        //Arrange
+        String category = "MONITOR";
+
+        //Act and Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            pcPartService.getAllByCategory(category);
+        });
+
+        assertEquals("Invalid category: MONITOR", exception.getMessage());
+
+        //Verify
+        verify(pcPartRepository,never()).findAllByCategory(any(PartsCategory.class));
     }
 
     @Test
