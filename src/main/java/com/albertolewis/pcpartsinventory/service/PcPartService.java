@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory.service;
 
+import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.repository.PcPartRepository;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,15 @@ public class PcPartService {
             throw new IllegalArgumentException("Manufacturer cannot be null or empty.");
         }
         return pcPartRepository.findAllByManufacturerIgnoreCase(name);
+    }
+
+    //Find all pc parts by category
+    public List<PcPart> getAllByCategory(String name){
+        if(name == null || name.isBlank()){
+            throw new IllegalArgumentException("Category cannot be null or empty.");
+        }
+        PartsCategory category = PartsCategory.valueOf(name.strip().toUpperCase());
+        return pcPartRepository.findAllByCategory(category);
     }
 
     //Update a pc part by id

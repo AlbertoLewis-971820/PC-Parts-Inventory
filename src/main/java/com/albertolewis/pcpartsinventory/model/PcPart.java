@@ -1,8 +1,6 @@
 package com.albertolewis.pcpartsinventory.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -16,6 +14,7 @@ public class PcPart {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
+
 
     public Long getId() {
         return id;
@@ -33,11 +32,11 @@ public class PcPart {
         this.name = name;
     }
 
-    public String getCategory() {
+    public PartsCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(PartsCategory category) {
         this.category = category;
     }
 
@@ -68,7 +67,7 @@ public class PcPart {
 
     }
 
-    public PcPart(String name, String category, String manufacturer, BigDecimal price, Integer quantity) {
+    public PcPart(String name, PartsCategory category, String manufacturer, BigDecimal price, Integer quantity) {
         this.name = name;
         this.category = category;
         this.manufacturer = manufacturer;
@@ -92,8 +91,9 @@ public class PcPart {
     @NotBlank
     private String name;
 
-    @NotBlank
-    private String category;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PartsCategory category;
 
     @NotBlank
     private String manufacturer;

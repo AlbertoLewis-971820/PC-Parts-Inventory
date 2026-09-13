@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory;
 
+import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.repository.PcPartRepository;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
@@ -30,13 +31,15 @@ public class PcPartServiceTest {
     @InjectMocks
     private PcPartService pcPartService;
 
+
+
     @Test
     void getAllQuantityLessThan_returnsLowStockParts(){
         //Arrange
         PcPart [] pcParts = {
-                new PcPart("7600X", "CPU",  "AMD", new BigDecimal(120), 4),
-                new PcPart("RTX 3080", "GPU", "NVIDIA", new BigDecimal(500), 2),
-                new PcPart("16GB DDR4", "RAM", "Corsair", new BigDecimal(100), 10)
+                new PcPart("7600X", PartsCategory.CPU, "AMD", new BigDecimal(120), 4),
+                new PcPart("RTX 3080", PartsCategory.GPU, "NVIDIA", new BigDecimal(500), 2),
+                new PcPart("16GB DDR4", PartsCategory.RAM, "Corsair", new BigDecimal(100), 10)
         };
 
         when(pcPartRepository.findAllByQuantityLessThan(5))
@@ -55,13 +58,35 @@ public class PcPartServiceTest {
     }
 
     @Test
+    void getAllByCategory_returnsMatchingParts(){
+
+        //Arrange
+        PcPart pcParts = new PcPart("RTX 3080", PartsCategory.GPU, "NVIDIA", new BigDecimal(500), 2);
+
+        when(pcPartRepository.findAllByCategory(PartsCategory.GPU))
+                .thenReturn(List.of(pcParts));
+
+        //Act
+        List<PcPart> result = pcPartService.getAllByCategory("gpu");
+
+        //Assert
+        assertEquals(1,result.size());
+        assertTrue(result.contains(pcParts));
+
+
+        //Verify
+        verify(pcPartRepository).findAllByCategory(PartsCategory.GPU);
+
+    }
+
+    @Test
     void getAllByManufacturer_returnsMatchingParts(){
 
         //Arrange
-        PcPart [] pcParts = {
-                new PcPart("7600X", "CPU",  "AMD", new BigDecimal(120), 4),
-                new PcPart("RTX 3080", "GPU", "AMD", new BigDecimal(500), 2),
-                new PcPart("16GB DDR4", "RAM", "Corsair", new BigDecimal(100), 10)
+        PcPart [] pcParts = {new PcPart("16GB DDR4", PartsCategory.RAM, "Corsair", new BigDecimal(100), 10),
+                new PcPart("7600X", PartsCategory.CPU, "AMD", new BigDecimal(120), 4),
+                new PcPart("RTX 3080", PartsCategory.GPU, "NVIDIA", new BigDecimal(500), 2),
+                new PcPart("16GB DDR4", PartsCategory.RAM, "Corsair", new BigDecimal(100), 10)
         };
 
         when(pcPartRepository.findAllByManufacturerIgnoreCase("AMD"))

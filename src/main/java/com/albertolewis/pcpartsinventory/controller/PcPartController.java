@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory.controller;
 
+import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
 import jakarta.validation.Valid;
@@ -52,6 +53,12 @@ public class PcPartController {
     @GetMapping("/manufacturer")
     public List<PcPart> getAllByManufacturer(@RequestParam String name) {
         return pcPartService.getAllByManufacturer(name);
+    }
+
+    //Find all pc parts by category
+    @GetMapping("/category")
+    public List<PcPart> getAllByCategory(@RequestParam String name){
+        return pcPartService.getAllByCategory(name);
     }
 
 

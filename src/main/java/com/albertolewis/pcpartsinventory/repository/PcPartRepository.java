@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory.repository;
 
+import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +13,8 @@ public interface PcPartRepository extends JpaRepository<PcPart, Long> {
 
     //Grab all pc parts by manufacturer name
     List<PcPart> findAllByManufacturerIgnoreCase(String manufacturer);
+
+    //Grab all pc parts by category
+    List<PcPart> findAllByCategory(PartsCategory category);
 
 }
