@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory.service;
 
+import com.albertolewis.pcpartsinventory.dto.RestockRequest;
 import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.repository.PcPartRepository;
@@ -72,6 +73,11 @@ public class PcPartService {
         }
         return pcPartRepository.findAllByCategory(category);
     }
+
+    //Restock a pc part
+    public PcPart restockPcPart(Long id, RestockRequest restockRequest){
+    }
+
 
     //Update a pc part by id
     public Optional<PcPart> updatePcPart(Long id, PcPart pcPart) {
