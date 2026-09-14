@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory.controller;
 
+import com.albertolewis.pcpartsinventory.dto.RestockRequest;
 import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
@@ -21,11 +22,13 @@ public class PcPartController {
         this.pcPartService = pcPartService;
     }
 
+    //Show all pc parts
     @GetMapping
     public List<PcPart> getAllPcParts() {
         return pcPartService.getAllPcParts();
     }
 
+    //Get a pc part by id
     @GetMapping("/{id}")
     public ResponseEntity<PcPart> getPcPartById(@PathVariable Long id) {
         return pcPartService.getPcPartById(id)
@@ -33,6 +36,7 @@ public class PcPartController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    //Delete a pc part
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePcPart(@PathVariable Long id) {
 
@@ -44,6 +48,7 @@ public class PcPartController {
         }
     }
 
+    //Return a list of low stock pc parts
     @GetMapping("/low-stock")
     public List<PcPart> getAllByQuantityLessThan(@RequestParam Integer threshold) {
         return pcPartService.getAllByQuantityLessThan(threshold);
@@ -62,6 +67,7 @@ public class PcPartController {
     }
 
 
+    //Update a pc part
     @PutMapping("/{id}")
     public ResponseEntity<PcPart> updatePcPart(@PathVariable Long id, @Valid @RequestBody PcPart pcPart) {
         Optional<PcPart> updatedPcPart = pcPartService.updatePcPart(id, pcPart);
@@ -70,6 +76,15 @@ public class PcPartController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    //Update the quantity of a pc part
+    @PatchMapping("/{id}/restock")
+    public ResponseEntity<PcPart> restockPcPart(@PathVariable Long id, @Valid @RequestBody RestockRequest restockRequest) {
+
+        PcPart updatedPcPart = pcPartService.restockPcPart(id, restockRequest);
+        return ResponseEntity.ok(updatedPcPart);
+    }
+
+    //Add a pc part
     @PostMapping
     public PcPart addPcPart(@Valid @RequestBody PcPart pcPart) {
         return pcPartService.savePcPart(pcPart);

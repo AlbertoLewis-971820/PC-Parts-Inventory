@@ -76,6 +76,13 @@ public class PcPartService {
 
     //Restock a pc part
     public PcPart restockPcPart(Long id, RestockRequest restockRequest){
+
+        PcPart pcPart =  pcPartRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("PcPart with id " + id + " not found."));
+
+        Integer newQuantity = restockRequest.getQuantity() +  pcPart.getQuantity();
+        pcPart.setQuantity(newQuantity);
+        return pcPartRepository.save(pcPart);
     }
 
 
