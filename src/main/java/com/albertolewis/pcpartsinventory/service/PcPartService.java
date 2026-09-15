@@ -1,6 +1,7 @@
 package com.albertolewis.pcpartsinventory.service;
 
 import com.albertolewis.pcpartsinventory.dto.RestockRequest;
+import com.albertolewis.pcpartsinventory.exception.PcPartNotFoundException;
 import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.repository.PcPartRepository;
@@ -78,7 +79,7 @@ public class PcPartService {
     public PcPart restockPcPart(Long id, RestockRequest restockRequest){
 
         PcPart pcPart =  pcPartRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("PcPart with id " + id + " not found."));
+                .orElseThrow(() -> new PcPartNotFoundException("Pc Part id: " + id + " not found"));
 
         Integer newQuantity = restockRequest.getQuantity() +  pcPart.getQuantity();
         pcPart.setQuantity(newQuantity);
