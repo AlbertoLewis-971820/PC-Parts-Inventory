@@ -1,5 +1,7 @@
 package com.albertolewis.pcpartsinventory;
 
+import com.albertolewis.pcpartsinventory.dto.RestockRequest;
+import com.albertolewis.pcpartsinventory.exception.PcPartNotFoundException;
 import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.repository.PcPartRepository;
@@ -188,6 +190,56 @@ public class PcPartServiceTest {
         //Verify
         verifyNoInteractions(pcPartRepository);
         //verify(pcPartRepository, never()).findAllByManufacturerIgnoreCase(isNull());
+
+    }
+
+    @Test
+    void restockPcPartQuantity(){
+        //Arrange
+        RestockRequest restockQuantity = new RestockRequest();
+        restockQuantity.setQuantity(5);
+
+        PcPart pcPart = new PcPart("9800X3D", PartsCategory.CPU,"AMD",new BigDecimal("250.00"), 2);
+
+        when(pcPartRepository.findById(1L))
+                .thenReturn(Optional.of(pcPart));
+        when(pcPartRepository.save(pcPart))
+                .thenReturn(pcPart);
+
+        //Act
+        PcPart result = pcPartService.restockPcPart(1L,restockQuantity);
+
+
+        //Assert
+        assertEquals(7, result.getQuantity());
+
+
+        //Verify
+        verify(pcPartRepository).findById(1L);
+        verify(pcPartRepository).save(pcPart);
+
+
+    }
+
+    @Test
+    void restockPcPartQuantity_notFound_throwsException() {
+
+        //Arrange
+        RestockRequest restockRequest = new RestockRequest();
+
+        when(pcPartRepository.findById(2L))
+                .thenReturn(Optional.empty());
+
+        PcPartNotFoundException exception = assertThrows(PcPartNotFoundException.class, () -> {
+            pcPartService.restockPcPart(2L, restockRequest);
+        });
+
+        assertEquals("Pc Part id: 2 not found", exception.getMessage());
+
+        //Verify
+        verify(pcPartRepository).findById(2L);
+        verify(pcPartRepository, never()).save(any(PcPart.class));
+
 
     }
 
