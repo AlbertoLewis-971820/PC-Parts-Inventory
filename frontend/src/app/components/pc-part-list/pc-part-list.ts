@@ -16,6 +16,8 @@ export class PcPartList implements OnInit {
 
   editingPart: PcPart | null = null;
 
+  manufacturerSearch: string = '';
+
 
 
   constructor(private pcPartService: PcPartService) {
@@ -51,6 +53,34 @@ saveEditing(): void {
 addPart(part: PcPart): void {
   const currentParts = this.pcParts();
   this.pcParts.set([...currentParts, part]);
+}
+
+searchByManufacturer(): void{
+  if(this.manufacturerSearch.trim() === ''){
+      this.pcPartService.getAllPcParts().subscribe({
+        next: (data: PcPart[]) => {
+          console.log('Got all the pc parts!', data);
+          this.pcParts.set(data);
+          },
+        error: (error) => {
+          console.error('Error getting pc parts:',error);
+          }
+
+        });
+
+      return;
+
+    }
+
+  this.pcPartService.getPcPartsByManufacturer(this.manufacturerSearch).subscribe({
+         next: (data: PcPart[]) => {
+             console.log('Got parts for manufacturer: ', data);
+             this.pcParts.set(data);
+           },
+         error: (error) => {
+             console.error('Error getting PC parts:', error);
+           }
+    });
 }
 
 deletePcPart(id: number | undefined): void {

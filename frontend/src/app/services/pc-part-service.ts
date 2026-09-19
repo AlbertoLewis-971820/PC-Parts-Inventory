@@ -30,4 +30,10 @@ export class PcPartService {
     return this.httpClient.put<PcPart>(url, pcPart);
   }
 
+  //Show all parts by manufacturer
+  getPcPartsByManufacturer(manufacturer: string): Observable<PcPart[]>{
+    const url = `${this.apiUrl}/manufacturer?name=${manufacturer}`;
+    return this.httpClient.get<PcPart[]>(url);
+  }
+
 }
