@@ -36,4 +36,9 @@ export class PcPartService {
     return this.httpClient.get<PcPart[]>(url);
   }
 
+  getPcPartsByCategory(category: string): Observable<PcPart[]> {
+    const url = `${this.apiUrl}/category?name=${category}`;
+    return this.httpClient.get<PcPart[]>(url);
+  }
+
 }

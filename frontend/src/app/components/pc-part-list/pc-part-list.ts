@@ -18,6 +18,8 @@ export class PcPartList implements OnInit {
 
   manufacturerSearch: string = '';
 
+  categorySearch: string = '';
+
 
 
   constructor(private pcPartService: PcPartService) {
@@ -54,6 +56,32 @@ addPart(part: PcPart): void {
   const currentParts = this.pcParts();
   this.pcParts.set([...currentParts, part]);
 }
+
+searchByCategory(): void {
+  if(this.categorySearch.trim() === ''){
+      this.pcPartService.getAllPcParts().subscribe({
+          next: (data: PcPart[]) => {
+              console.log('Got all the pc parts', data);
+              this.pcParts.set(data);
+            },
+          error: (error) => {
+              console.log('Error getting pc parts:',error);
+            }
+        });
+      return;
+    }
+  this.pcPartService.getPcPartsByCategory(this.categorySearch).subscribe({
+          next: (data: PcPart[]) => {
+                   console.log('Got parts for category: ', data);
+                   this.pcParts.set(data);
+                 },
+               error: (error) => {
+                   console.error('Error getting PC parts:', error);
+                 }
+
+    })
+}
+
 
 searchByManufacturer(): void{
   if(this.manufacturerSearch.trim() === ''){

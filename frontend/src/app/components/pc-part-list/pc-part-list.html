@@ -1,3 +1,25 @@
+<label for="category">Category:</label>
+
+<select
+  id="category"
+  [(ngModel)]="categorySearch"
+>
+  <option value="">All Categories</option>
+  <option value="CPU">CPU</option>
+  <option value="GPU">GPU</option>
+  <option value="RAM">RAM</option>
+  <option value="MOTHERBOARD">Motherboard</option>
+  <option value="COOLER">Cooler</option>
+  <option value="CASE">Case</option>
+  <option value="FANS">Fans</option>
+  <option value="PSU">PSU</option>
+</select>
+
+<button (click)="searchByCategory()">
+  Filter
+</button>
+
+
 <input
 type="text"
 [(ngModel)]="manufacturerSearch"
