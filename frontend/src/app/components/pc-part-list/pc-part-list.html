@@ -30,6 +30,15 @@ placeholder="Search by manufacturer"
 </button>
 
 
+<input
+  type="text"
+  [(ngModel)]="lowStockThreshold"
+  placeholder="Low stock threshold"
+/>
+<button (click)="searchLowStock()">
+  Low Stock
+</button>
+
 <table>
   <thead>
     <tr>

@@ -41,4 +41,10 @@ export class PcPartService {
     return this.httpClient.get<PcPart[]>(url);
   }
 
+  getLowStockPcParts(threshold: number): Observable<PcPart[]> {
+    const url = `${this.apiUrl}/low-stock?threshold=${threshold}`;
+    return this.httpClient.get<PcPart[]>(url);
+
+  }
+
 }

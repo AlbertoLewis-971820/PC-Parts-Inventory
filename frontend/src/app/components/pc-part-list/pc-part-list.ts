@@ -20,6 +20,8 @@ export class PcPartList implements OnInit {
 
   categorySearch: string = '';
 
+  lowStockThreshold: number | null | string = null;
+
 
 
   constructor(private pcPartService: PcPartService) {
@@ -109,6 +111,40 @@ searchByManufacturer(): void{
              console.error('Error getting PC parts:', error);
            }
     });
+}
+
+searchLowStock(): void {
+  console.log(
+          'Threshold:',
+          this.lowStockThreshold,
+          'Type:',
+          typeof this.lowStockThreshold
+        );
+  if(this.lowStockThreshold === null || this.lowStockThreshold === '') {
+    this.pcPartService.getAllPcParts().subscribe({
+      next: (data: PcPart[]) => {
+        console.log('Got all the pc parts!', data);
+        this.pcParts.set(data);
+      },
+      error: (error) => {
+        console.error('Error getting pc parts:', error);
+      }
+    });
+
+    return;
+  }
+
+  const threshold = Number(this.lowStockThreshold);
+
+  this.pcPartService.getLowStockPcParts(threshold).subscribe({
+    next: (data: PcPart[]) => {
+      console.log('Got low stock parts: ', data);
+      this.pcParts.set(data);
+    },
+    error: (error) => {
+      console.error('Error getting PC parts:', error);
+    }
+  });
 }
 
 deletePcPart(id: number | undefined): void {
