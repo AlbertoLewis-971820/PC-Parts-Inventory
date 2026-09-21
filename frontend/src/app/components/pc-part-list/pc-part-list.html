@@ -109,6 +109,20 @@ placeholder="Search by manufacturer"
             <td>
               <button (click)="startEditing(part)">Edit</button>
               <button (click)="deletePcPart(part.id)">Delete</button>
+              <button (click) ="startRestocking(part)">Restock</button>
+              @if (restockPartId === part.id) {
+              <input
+                type="number"
+                [(ngModel)]="restockQuantity"
+                placeholder="Quantity"
+              />
+
+
+              <button (click)="confirmRestock()">Confirm</button>
+              <button (click)="cancelRestock()">Cancel</button>
+
+
+              }
             </td>
 
           }

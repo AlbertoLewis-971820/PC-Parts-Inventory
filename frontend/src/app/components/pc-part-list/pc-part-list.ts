@@ -22,6 +22,9 @@ export class PcPartList implements OnInit {
 
   lowStockThreshold: number | null | string = null;
 
+  restockPartId: number | null = null;
+  restockQuantity: number | null = null;
+
 
 
   constructor(private pcPartService: PcPartService) {
@@ -29,6 +32,51 @@ export class PcPartList implements OnInit {
   }
 startEditing(part: PcPart): void {
   this.editingPart = { ...part }; // Create a copy of the part to edit
+}
+
+
+startRestocking(part: PcPart): void{
+  if(part.id === undefined){
+    console.error('Invalid part ID');
+    return;
+
+    }
+
+  this.restockPartId = part.id;
+  this.restockQuantity = null;
+
+}
+
+cancelRestock(): void{
+  this.restockQuantity = null;
+  this.restockPartId = null;
+  }
+
+confirmRestock(): void{
+  if(this.restockPartId === null || this.restockQuantity === null || this.restockQuantity <= 0){
+      console.log('Invalid restock quantity');
+      return;
+    }
+  this.pcPartService.restockPcPart(
+      this.restockPartId,
+      this.restockQuantity
+  ).subscribe({
+      next: (updatedPart: PcPart) => {
+        const currentParts = this.pcParts();
+
+        this.pcParts.set(
+          currentParts.map(part =>
+            part.id === updatedPart.id ? updatedPart : part
+            )
+          );
+        this.restockPartId = null;
+            this.restockQuantity = null;
+      },
+      error: (error) => {
+          console.error('Error restocking PC part:', error);
+      }
+
+  });
 }
 
 cancelEditing(): void {
@@ -114,12 +162,6 @@ searchByManufacturer(): void{
 }
 
 searchLowStock(): void {
-  console.log(
-          'Threshold:',
-          this.lowStockThreshold,
-          'Type:',
-          typeof this.lowStockThreshold
-        );
   if(this.lowStockThreshold === null || this.lowStockThreshold === '') {
     this.pcPartService.getAllPcParts().subscribe({
       next: (data: PcPart[]) => {

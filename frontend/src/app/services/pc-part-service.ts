@@ -47,4 +47,14 @@ export class PcPartService {
 
   }
 
+  restockPcPart(id: number, quantity: number): Observable<PcPart>{
+      const url = `${this.apiUrl}/${id}/restock`;
+      const request = {
+        quantity: quantity
+        };
+
+      return this.httpClient.patch<PcPart>(url, request);
+
+    }
+
 }
