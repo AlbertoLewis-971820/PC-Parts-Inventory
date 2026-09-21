@@ -1,0 +1,44 @@
+name: Backend CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-backend:
+    name: Build Backend
+    runs-on: ubuntu-latest
+    env:
+      DB_PASSWORD: testpassword
+    services:
+      postgres:
+        image: postgres:17
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: pc_parts_inventory
+          POSTGRES_USER: pcparts_user
+          POSTGRES_PASSWORD: testpassword
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Run backend tests
+        run: mvn test
