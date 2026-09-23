@@ -16,6 +16,7 @@ services:
       retries: 5
 
   backend:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-local}/pc-parts-inventory-backend:latest
     build: .
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pc_parts_inventory
@@ -28,6 +29,7 @@ services:
         condition: service_healthy
 
   frontend:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-local}/pc-parts-inventory-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile
