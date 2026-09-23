@@ -18,12 +18,15 @@ jobs:
     name: Build Docker Image
     runs-on: ubuntu-latest
 
-    env:
-      GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+
+      - name: Set lowercase repository owner
+        run: echo "GITHUB_REPOSITORY_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
+        env:
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
 
       - name: Log into Github Container Registry
         uses: docker/login-action@v4
