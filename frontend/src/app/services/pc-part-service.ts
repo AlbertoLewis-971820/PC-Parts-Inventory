@@ -8,7 +8,8 @@ import { PcPart } from '../models/pc-part';
 })
 export class PcPartService {
 
-  private apiUrl = 'http://localhost:8080/api/pcparts';
+  //private apiUrl = 'http://localhost:8080/api/pcparts';
+  private apiUrl = '/api/pcparts';
   constructor(private httpClient: HttpClient) { }
   // Get all PC parts from the backend API
   getAllPcParts(): Observable<PcPart[]> {
