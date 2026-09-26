@@ -13,7 +13,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pcparts")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {
+        "http://localhost:4200",
+        "https://pcpartvault.com",
+        "https://www.pcpartvault.com"
+})
 public class PcPartController {
 
     private final PcPartService pcPartService;
@@ -62,7 +66,7 @@ public class PcPartController {
 
     //Find all pc parts by category
     @GetMapping("/category")
-    public List<PcPart> getAllByCategory(@RequestParam String name){
+    public List<PcPart> getAllByCategory(@RequestParam String name) {
         return pcPartService.getAllByCategory(name);
     }
 
