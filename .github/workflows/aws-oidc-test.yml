@@ -8,28 +8,18 @@ permissions:
   contents: read
 
 jobs:
-  inspect-oidc:
+  test-aws-auth:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Inspect GitHub OIDC claims
-        shell: bash
-        run: |
-          TOKEN_RESPONSE=$(curl -sS \
-            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com")
+      - name: Checkout repository
+        uses: actions/checkout@v7
 
-          TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r '.value')
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: arn:aws:iam::605134438691:role/PCPartVaultGitHubDeployRole
+          aws-region: us-east-1
 
-          echo "$TOKEN" \
-            | cut -d '.' -f2 \
-            | base64 --decode 2>/dev/null \
-            | jq '{
-                aud,
-                sub,
-                repository,
-                repository_id,
-                repository_owner,
-                repository_owner_id,
-                ref
-              }'
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
