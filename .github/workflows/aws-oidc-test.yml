@@ -23,3 +23,26 @@ jobs:
 
       - name: Verify AWS identity
         run: aws sts get-caller-identity
+
+      - name: Send test command to EC2
+        id: ssm
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "i-024a9153ae698d8d4" \
+            --document-name "AWS-RunShellScript" \
+            --comment "GitHub Actions SSM connectivity test" \
+            --parameters 'commands=["whoami","hostname"]' \
+            --query "Command.CommandId" \
+            --output text)
+          
+          echo "command_id=$COMMAND_ID" >> "$GITHUB_OUTPUT"
+          echo "SSM Command ID: $COMMAND_ID"
+
+      - name: Get test command result
+        run: |
+          sleep 5
+          
+          aws ssm get-command-invocation \
+            --command-id "${{ steps.ssm.outputs.command_id }}" \
+            --instance-id "i-024a9153ae698d8d4" \
+            --query '{Status:Status,Output:StandardOutputContent,Error:StandardErrorContent}'
