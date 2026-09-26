@@ -31,7 +31,9 @@ jobs:
             --instance-ids "i-024a9153ae698d8d4" \
             --document-name "AWS-RunShellScript" \
             --comment "GitHub Actions SSM connectivity test" \
-            --parameters 'commands=["whoami","hostname"]' \
+            --parameters 'commands=["--parameters 'commands=["sudo -u ubuntu bash -lc 
+          '\''cd /home/ubuntu/pc-parts-inventory && 
+          docker compose ps'\''"]'"]' \
             --query "Command.CommandId" \
             --output text)
           
