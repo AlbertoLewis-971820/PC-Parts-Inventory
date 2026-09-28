@@ -31,7 +31,9 @@ export class PcPartList implements OnInit {
 
   }
 startEditing(part: PcPart): void {
+  console.log("Editing part:", part);
   this.editingPart = { ...part }; // Create a copy of the part to edit
+
 }
 
 
@@ -42,6 +44,7 @@ startRestocking(part: PcPart): void{
 
     }
 
+  console.log("Restocking part:", part);
   this.restockPartId = part.id;
   this.restockQuantity = null;
 
