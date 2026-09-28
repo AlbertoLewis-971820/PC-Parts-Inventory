@@ -1,58 +1,68 @@
-<h1>PC Part Inventory</h1>
+<h1>PC Part Vault</h1>
 <form #partForm="ngForm" (ngSubmit)="addPcPart(partForm)">
   <div>
     <label for="name">Name:</label>
     <input
-      id="name"
-      type="text"
-      name="name"
       [(ngModel)]="newPcPart.name"
+      id="name"
+      name="name"
+      type="text"
     />
   </div>
 
   <div>
     <label for="category">Category:</label>
-    <input
-      id="category"
-      type="text"
-      name="category"
+    <select
       [(ngModel)]="newPcPart.category"
-    />
+      id="category"
+      name="category"
+      type="text"
+    >
+      <option value="">Select a category</option>
+      <option value="CPU">CPU</option>
+      <option value="GPU">GPU</option>
+      <option value="RAM">RAM</option>
+      <option value="MOTHERBOARD">MOTHERBOARD</option>
+      <option value="COOLER">COOLER</option>
+      <option value="CASE">CASE</option>
+      <option value="FANS">FANS</option>
+      <option value="PSU">PSU</option>
+    </select>
   </div>
 
   <div>
     <label for="manufacturer">Manufacturer:</label>
     <input
-      id="manufacturer"
-      type="text"
-      name="manufacturer"
       [(ngModel)]="newPcPart.manufacturer"
+      id="manufacturer"
+      name="manufacturer"
+      type="text"
     />
   </div>
 
   <div>
     <label for="price">Price:</label>
     <input
-      id="price"
-      type="number"
-      name="price"
       [(ngModel)]="newPcPart.price"
+      id="price"
+      name="price"
+      type="number"
     />
   </div>
 
   <div>
     <label for="quantity">Quantity:</label>
     <input
-      id="quantity"
-      type="number"
-      name="quantity"
       [(ngModel)]="newPcPart.quantity"
+      id="quantity"
+      name="quantity"
+      type="number"
     />
   </div>
 
   <button type="submit">Add PC Part</button>
   @if (errorMessage) {
-    <p class="error">{{ errorMessage }}</p>
+  <p class="error">{{ errorMessage }}</p>
   }
 </form>
 
