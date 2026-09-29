@@ -1,5 +1,5 @@
 <div class="list-container">
-  <h1>PC Parts List</h1>
+  <h1>Vault List</h1>
 
   <div class="search-container">
 
@@ -80,148 +80,151 @@
   </div>
 
 
-  <table class="modern-table">
-    <thead>
-    <tr class="header-row">
-      <th class="header-cell">Name</th>
-      <th class="header-cell">Category</th>
-      <th class="header-cell">Manufacturer</th>
-      <th class="header-cell">Price</th>
-      <th class="header-cell">Quantity</th>
-      <th class="header-cell">Actions</th>
-    </tr>
-    </thead>
+  <div class="table-wrapper">
+    <table class="modern-table">
+      <thead>
+      <tr class="header-row">
+        <th class="header-cell">Name</th>
+        <th class="header-cell">Category</th>
+        <th class="header-cell">Manufacturer</th>
+        <th class="header-cell">Price</th>
+        <th class="header-cell">Quantity</th>
+        <th class="header-cell">Actions</th>
+      </tr>
+      </thead>
 
-    <tbody>
-    @for (part of pcParts(); track part.id) {
-    <tr class="data-row">
+      <tbody>
+      @for (part of pcParts(); track part.id) {
+      <tr class="data-row">
 
-      @if (editingPart?.id === part.id) {
+        @if (editingPart?.id === part.id) {
 
-      <td class="data-cell">
-        <input
-          [(ngModel)]="editingPart!.name"
-          name="edit-name"
-          type="text"
-        />
-      </td>
+        <td class="data-cell">
+          <input
+            [(ngModel)]="editingPart!.name"
+            name="edit-name"
+            type="text"
+          />
+        </td>
 
-      <td class="data-cell">
-        <select
-          [(ngModel)]="editingPart!.category"
-          name="edit-category"
-        >
-          <option value="CPU">CPU</option>
-          <option value="GPU">GPU</option>
-          <option value="RAM">RAM</option>
-          <option value="MOTHERBOARD">MOTHERBOARD</option>
-          <option value="COOLER">COOLER</option>
-          <option value="CASE">CASE</option>
-          <option value="FANS">FANS</option>
-          <option value="PSU">PSU</option>
-        </select>
-      </td>
+        <td class="data-cell">
+          <select
+            [(ngModel)]="editingPart!.category"
+            name="edit-category"
+          >
+            <option value="CPU">CPU</option>
+            <option value="GPU">GPU</option>
+            <option value="RAM">RAM</option>
+            <option value="MOTHERBOARD">MOTHERBOARD</option>
+            <option value="COOLER">COOLER</option>
+            <option value="CASE">CASE</option>
+            <option value="FANS">FANS</option>
+            <option value="PSU">PSU</option>
+          </select>
+        </td>
 
-      <td class="data-cell">
-        <input
-          [(ngModel)]="editingPart!.manufacturer"
-          name="edit-manufacturer"
-          type="text"
-        />
-      </td>
+        <td class="data-cell">
+          <input
+            [(ngModel)]="editingPart!.manufacturer"
+            name="edit-manufacturer"
+            type="text"
+          />
+        </td>
 
-      <td class="data-cell">
-        <input
-          [(ngModel)]="editingPart!.price"
-          name="edit-price"
-          type="number"
-        />
-      </td>
+        <td class="data-cell">
+          <input
+            [(ngModel)]="editingPart!.price"
+            name="edit-price"
+            type="number"
+          />
+        </td>
 
-      <td class="data-cell">
-        <input
-          [(ngModel)]="editingPart!.quantity"
-          name="edit-quantity"
-          type="number"
-        />
-      </td>
+        <td class="data-cell">
+          <input
+            [(ngModel)]="editingPart!.quantity"
+            name="edit-quantity"
+            type="number"
+          />
+        </td>
 
-      <td class="data-cell actions-cell">
-        <button
-          (click)="saveEditing()"
-          class="action-button edit-button"
-        >
-          Save
-        </button>
+        <td class="data-cell actions-cell">
+          <button
+            (click)="saveEditing()"
+            class="action-button edit-button"
+          >
+            Save
+          </button>
 
-        <button
-          (click)="cancelEditing()"
-          class="action-button cancel-button"
-        >
-          Cancel
-        </button>
-      </td>
+          <button
+            (click)="cancelEditing()"
+            class="action-button cancel-button"
+          >
+            Cancel
+          </button>
+        </td>
 
-      } @else {
+        } @else {
 
-      <td class="data-cell">{{ part.name }}</td>
-      <td class="data-cell">{{ part.category }}</td>
-      <td class="data-cell">{{ part.manufacturer }}</td>
-      <td class="data-cell price-cell">${{ part.price }}</td>
-      <td class="data-cell quantity-cell">{{ part.quantity }}</td>
+        <td class="data-cell">{{ part.name }}</td>
+        <td class="data-cell">{{ part.category }}</td>
+        <td class="data-cell">{{ part.manufacturer }}</td>
+        <td class="data-cell price-cell">${{ part.price }}</td>
+        <td class="data-cell quantity-cell">{{ part.quantity }}</td>
 
-      <td class="data-cell actions-cell">
-        <button
-          (click)="startEditing(part)"
-          class="action-button edit-button"
-        >
-          Edit
-        </button>
+        <td class="data-cell actions-cell">
+          <button
+            (click)="startEditing(part)"
+            class="action-button edit-button"
+          >
+            Edit
+          </button>
 
-        <button
-          (click)="startRestocking(part)"
-          class="action-button restock-button"
-        >
-          Restock
-        </button>
+          <button
+            (click)="startRestocking(part)"
+            class="action-button restock-button"
+          >
+            Restock
+          </button>
 
-        <button
-          (click)="deletePcPart(part.id)"
-          class="action-button delete-button"
-        >
-          Delete
-        </button>
+          <button
+            (click)="deletePcPart(part.id)"
+            class="action-button delete-button"
+          >
+            Delete
+          </button>
 
-        @if (restockPartId === part.id) {
+          @if (restockPartId === part.id) {
 
-        <input
-          [(ngModel)]="restockQuantity"
-          class="restock-input"
-          placeholder="Quantity"
-          type="number"
-        />
+          <input
+            [(ngModel)]="restockQuantity"
+            class="restock-input"
+            placeholder="Quantity"
+            type="number"
+          />
 
-        <button
-          (click)="confirmRestock()"
-          class="action-button confirm-button"
-        >
-          Confirm
-        </button>
+          <button
+            (click)="confirmRestock()"
+            class="action-button confirm-button"
+          >
+            Confirm
+          </button>
 
-        <button
-          (click)="cancelRestock()"
-          class="action-button cancel-button"
-        >
-          Cancel
-        </button>
+          <button
+            (click)="cancelRestock()"
+            class="action-button cancel-button"
+          >
+            Cancel
+          </button>
+
+          }
+        </td>
 
         }
-      </td>
 
+      </tr>
       }
+      </tbody>
+    </table>
+  </div>
 
-    </tr>
-    }
-    </tbody>
-  </table>
 </div>

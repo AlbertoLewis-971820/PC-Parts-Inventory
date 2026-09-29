@@ -75,3 +75,34 @@ button:focus {
   color: #f87171;
   margin-top: 16px;
 }
+
+/* =========================
+   Mobile
+   ========================= */
+
+@media (max-width: 600px) {
+
+  .form-container {
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .form-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-group {
+    gap: 12px;
+  }
+
+  input,
+  select {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    min-height: 44px;
+  }
+}
