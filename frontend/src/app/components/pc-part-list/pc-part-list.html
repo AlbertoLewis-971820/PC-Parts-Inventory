@@ -32,7 +32,6 @@
       </div>
     </div>
 
-
     <div class="filter-group">
       <label for="manufacturer-search">Manufacturer</label>
 
@@ -53,7 +52,6 @@
         </button>
       </div>
     </div>
-
 
     <div class="filter-group">
       <label for="low-stock-threshold">Low Stock</label>
@@ -79,9 +77,9 @@
 
   </div>
 
-
   <div class="table-wrapper">
     <table class="modern-table">
+
       <thead>
       <tr class="header-row">
         <th class="header-cell">Name</th>
@@ -94,7 +92,9 @@
       </thead>
 
       <tbody>
+
       @for (part of pcParts(); track part.id) {
+
       <tr class="data-row">
 
         @if (editingPart?.id === part.id) {
@@ -151,6 +151,7 @@
           <button
             (click)="saveEditing()"
             class="action-button edit-button"
+            type="button"
           >
             Save
           </button>
@@ -158,6 +159,7 @@
           <button
             (click)="cancelEditing()"
             class="action-button cancel-button"
+            type="button"
           >
             Cancel
           </button>
@@ -172,9 +174,11 @@
         <td class="data-cell quantity-cell">{{ part.quantity }}</td>
 
         <td class="data-cell actions-cell">
+
           <button
             (click)="startEditing(part)"
             class="action-button edit-button"
+            type="button"
           >
             Edit
           </button>
@@ -182,6 +186,7 @@
           <button
             (click)="startRestocking(part)"
             class="action-button restock-button"
+            type="button"
           >
             Restock
           </button>
@@ -189,6 +194,7 @@
           <button
             (click)="deletePcPart(part.id)"
             class="action-button delete-button"
+            type="button"
           >
             Delete
           </button>
@@ -198,6 +204,7 @@
           <input
             [(ngModel)]="restockQuantity"
             class="restock-input"
+            min="1"
             placeholder="Quantity"
             type="number"
           />
@@ -205,6 +212,7 @@
           <button
             (click)="confirmRestock()"
             class="action-button confirm-button"
+            type="button"
           >
             Confirm
           </button>
@@ -212,19 +220,41 @@
           <button
             (click)="cancelRestock()"
             class="action-button cancel-button"
+            type="button"
           >
             Cancel
           </button>
 
           }
+
         </td>
 
         }
 
       </tr>
+
+      } @empty {
+
+      <tr>
+        <td class="empty-state" colspan="6">
+
+          <div class="empty-state-content">
+                <span class="empty-state-title">
+                  No PC parts found
+                </span>
+
+            <span class="empty-state-message">
+                  Add a PC part or try changing your filters.
+                </span>
+          </div>
+
+        </td>
+      </tr>
+
       }
+
       </tbody>
+
     </table>
   </div>
-
 </div>

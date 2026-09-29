@@ -8,7 +8,8 @@
   >
 
     <div class="form-section">
-      <label for="name">Part Name:</label>
+      <label for="name">Name:</label>
+
       <input
         [(ngModel)]="newPcPart.name"
         id="name"
@@ -19,6 +20,7 @@
 
     <div class="form-section">
       <label for="category">Category:</label>
+
       <select
         [(ngModel)]="newPcPart.category"
         class="form-select"
@@ -39,6 +41,7 @@
 
     <div class="form-section">
       <label for="manufacturer">Manufacturer:</label>
+
       <input
         [(ngModel)]="newPcPart.manufacturer"
         id="manufacturer"
@@ -49,6 +52,7 @@
 
     <div class="form-section">
       <label for="price">Price:</label>
+
       <input
         [(ngModel)]="newPcPart.price"
         id="price"
@@ -59,6 +63,7 @@
 
     <div class="form-section">
       <label for="quantity">Quantity:</label>
+
       <input
         [(ngModel)]="newPcPart.quantity"
         id="quantity"
@@ -75,7 +80,9 @@
     </button>
 
     @if (errorMessage) {
-    <p class="error">{{ errorMessage }}</p>
+    <p class="error">
+      {{ errorMessage }}
+    </p>
     }
 
   </form>
