@@ -5,6 +5,12 @@
   margin-bottom: 32px;
 }
 
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .form-section {
   margin-bottom: 16px;
 }
@@ -23,7 +29,15 @@ label {
 input, select {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px;
+  padding: 14px;
+  background: #111827;
+  color: #f9fafb;
+  border: 1px solid #4b5563;
+  border-radius: 5px;
+}
+
+.form-select {
+  padding: 12px;
   background: #111827;
   color: #f9fafb;
   border: 1px solid #4b5563;
@@ -31,7 +45,7 @@ input, select {
 }
 
 button {
-  padding: 12px;
+  padding: 14px;
   border: none;
   border-radius: 6px;
   background: #2563eb;
@@ -40,8 +54,21 @@ button {
   cursor: pointer;
 }
 
+.btn-primary {
+  background: #2563eb;
+}
+
+.btn-secondary {
+  background: #4b5563;
+  margin-left: 8px;
+}
+
 button:hover {
   background: #1d4ed8;
+}
+
+button:focus {
+  outline: 2px solid #2563eb;
 }
 
 .error {
