@@ -2,44 +2,103 @@
   <h1>PC Parts List</h1>
 
   <div class="search-container">
-    <label for="category">Category:</label>
-    <select [(ngModel)]="categorySearch" id="category">
-      <option value="">All Categories</option>
-      <option value="CPU">CPU</option>
-      <option value="GPU">GPU</option>
-      <option value="RAM">RAM</option>
-      <option value="MOTHERBOARD">MOTHERBOARD</option>
-      <option value="COOLER">COOLER</option>
-      <option value="CASE">CASE</option>
-      <option value="FANS">FANS</option>
-      <option value="PSU">PSU</option>
-    </select>
-    <button (click)="searchByCategory()">Filter</button>
 
-    <input [(ngModel)]="manufacturerSearch" placeholder="Search by manufacturer" type="text"/>
-    <button (click)="searchByManufacturer()">Search</button>
+    <div class="filter-group">
+      <label for="category">Category</label>
 
-    <input [(ngModel)]="lowStockThreshold" placeholder="Low stock threshold" type="number"/>
-    <button (click)="searchLowStock()">Low Stock</button>
+      <div class="filter-controls">
+        <select
+          [(ngModel)]="categorySearch"
+          id="category"
+        >
+          <option value="">All Categories</option>
+          <option value="CPU">CPU</option>
+          <option value="GPU">GPU</option>
+          <option value="RAM">RAM</option>
+          <option value="MOTHERBOARD">MOTHERBOARD</option>
+          <option value="COOLER">COOLER</option>
+          <option value="CASE">CASE</option>
+          <option value="FANS">FANS</option>
+          <option value="PSU">PSU</option>
+        </select>
+
+        <button
+          (click)="searchByCategory()"
+          class="filter-button"
+          type="button"
+        >
+          Filter
+        </button>
+      </div>
+    </div>
+
+
+    <div class="filter-group">
+      <label for="manufacturer-search">Manufacturer</label>
+
+      <div class="filter-controls">
+        <input
+          [(ngModel)]="manufacturerSearch"
+          id="manufacturer-search"
+          placeholder="e.g. AMD"
+          type="text"
+        />
+
+        <button
+          (click)="searchByManufacturer()"
+          class="filter-button"
+          type="button"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+
+
+    <div class="filter-group">
+      <label for="low-stock-threshold">Low Stock</label>
+
+      <div class="filter-controls">
+        <input
+          [(ngModel)]="lowStockThreshold"
+          id="low-stock-threshold"
+          min="0"
+          placeholder="Threshold"
+          type="number"
+        />
+
+        <button
+          (click)="searchLowStock()"
+          class="filter-button"
+          type="button"
+        >
+          Show
+        </button>
+      </div>
+    </div>
+
   </div>
 
-  <table>
+
+  <table class="modern-table">
     <thead>
-    <tr>
-      <th>Name</th>
-      <th>Category</th>
-      <th>Manufacturer</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Actions</th>
+    <tr class="header-row">
+      <th class="header-cell">Name</th>
+      <th class="header-cell">Category</th>
+      <th class="header-cell">Manufacturer</th>
+      <th class="header-cell">Price</th>
+      <th class="header-cell">Quantity</th>
+      <th class="header-cell">Actions</th>
     </tr>
     </thead>
+
     <tbody>
     @for (part of pcParts(); track part.id) {
-    <tr>
+    <tr class="data-row">
 
       @if (editingPart?.id === part.id) {
-      <td>
+
+      <td class="data-cell">
         <input
           [(ngModel)]="editingPart!.name"
           name="edit-name"
@@ -47,7 +106,7 @@
         />
       </td>
 
-      <td>
+      <td class="data-cell">
         <select
           [(ngModel)]="editingPart!.category"
           name="edit-category"
@@ -63,7 +122,7 @@
         </select>
       </td>
 
-      <td>
+      <td class="data-cell">
         <input
           [(ngModel)]="editingPart!.manufacturer"
           name="edit-manufacturer"
@@ -71,7 +130,7 @@
         />
       </td>
 
-      <td>
+      <td class="data-cell">
         <input
           [(ngModel)]="editingPart!.price"
           name="edit-price"
@@ -79,7 +138,7 @@
         />
       </td>
 
-      <td>
+      <td class="data-cell">
         <input
           [(ngModel)]="editingPart!.quantity"
           name="edit-quantity"
@@ -87,34 +146,78 @@
         />
       </td>
 
-      <td>
-        <button (click)="saveEditing()">Save</button>
-        <button (click)="cancelEditing()">Cancel</button>
+      <td class="data-cell actions-cell">
+        <button
+          (click)="saveEditing()"
+          class="action-button edit-button"
+        >
+          Save
+        </button>
+
+        <button
+          (click)="cancelEditing()"
+          class="action-button cancel-button"
+        >
+          Cancel
+        </button>
       </td>
 
       } @else {
-      <td>{{ part.name }}</td>
-      <td>{{ part.category }}</td>
-      <td>{{ part.manufacturer }}</td>
-      <td>${{ part.price }}</td>
-      <td>{{ part.quantity }}</td>
 
-      <td>
-        <button (click)="startEditing(part)">Edit</button>
-        <button (click)="startRestocking(part)">Restock</button>
-        <button (click)="deletePcPart(part.id)">Delete</button>
+      <td class="data-cell">{{ part.name }}</td>
+      <td class="data-cell">{{ part.category }}</td>
+      <td class="data-cell">{{ part.manufacturer }}</td>
+      <td class="data-cell price-cell">${{ part.price }}</td>
+      <td class="data-cell quantity-cell">{{ part.quantity }}</td>
+
+      <td class="data-cell actions-cell">
+        <button
+          (click)="startEditing(part)"
+          class="action-button edit-button"
+        >
+          Edit
+        </button>
+
+        <button
+          (click)="startRestocking(part)"
+          class="action-button restock-button"
+        >
+          Restock
+        </button>
+
+        <button
+          (click)="deletePcPart(part.id)"
+          class="action-button delete-button"
+        >
+          Delete
+        </button>
 
         @if (restockPartId === part.id) {
+
         <input
           [(ngModel)]="restockQuantity"
+          class="restock-input"
           placeholder="Quantity"
           type="number"
         />
 
-        <button (click)="confirmRestock()">Confirm</button>
-        <button (click)="cancelRestock()">Cancel</button>
+        <button
+          (click)="confirmRestock()"
+          class="action-button confirm-button"
+        >
+          Confirm
+        </button>
+
+        <button
+          (click)="cancelRestock()"
+          class="action-button cancel-button"
+        >
+          Cancel
+        </button>
+
         }
       </td>
+
       }
 
     </tr>

@@ -1,15 +1,31 @@
 <div class="form-container">
-  <h1>PC Part Vault</h1>
-  <form #partForm="ngForm" (ngSubmit)="addPcPart(partForm)">
+  <h1>PC Part Inventory</h1>
+
+  <form
+    #partForm="ngForm"
+    (ngSubmit)="addPcPart(partForm)"
+    class="form-group"
+  >
+
     <div class="form-section">
       <label for="name">Name:</label>
-      <input [(ngModel)]="newPcPart.name" id="name" name="name" required type="text"/>
+      <input
+        [(ngModel)]="newPcPart.name"
+        id="name"
+        name="name"
+        type="text"
+      />
     </div>
 
     <div class="form-section">
       <label for="category">Category:</label>
-      <select [(ngModel)]="newPcPart.category" id="category" name="category" required>
-        <option value="">Select a category</option>
+      <select
+        [(ngModel)]="newPcPart.category"
+        class="form-select"
+        id="category"
+        name="category"
+      >
+        <option disabled value="">Select a category</option>
         <option value="CPU">CPU</option>
         <option value="GPU">GPU</option>
         <option value="RAM">RAM</option>
@@ -23,22 +39,44 @@
 
     <div class="form-section">
       <label for="manufacturer">Manufacturer:</label>
-      <input [(ngModel)]="newPcPart.manufacturer" id="manufacturer" name="manufacturer" required type="text"/>
+      <input
+        [(ngModel)]="newPcPart.manufacturer"
+        id="manufacturer"
+        name="manufacturer"
+        type="text"
+      />
     </div>
 
     <div class="form-section">
       <label for="price">Price:</label>
-      <input [(ngModel)]="newPcPart.price" id="price" name="price" required type="number"/>
+      <input
+        [(ngModel)]="newPcPart.price"
+        id="price"
+        name="price"
+        type="number"
+      />
     </div>
 
     <div class="form-section">
       <label for="quantity">Quantity:</label>
-      <input [(ngModel)]="newPcPart.quantity" id="quantity" name="quantity" required type="number"/>
+      <input
+        [(ngModel)]="newPcPart.quantity"
+        id="quantity"
+        name="quantity"
+        type="number"
+      />
     </div>
 
-    <button type="submit">Add PC Part</button>
+    <button
+      class="btn-primary"
+      type="submit"
+    >
+      Add PC Part
+    </button>
+
     @if (errorMessage) {
     <p class="error">{{ errorMessage }}</p>
     }
+
   </form>
 </div>
