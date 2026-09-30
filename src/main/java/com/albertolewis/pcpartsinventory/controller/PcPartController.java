@@ -1,6 +1,7 @@
 package com.albertolewis.pcpartsinventory.controller;
 
 import com.albertolewis.pcpartsinventory.dto.RestockRequest;
+import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
 import jakarta.validation.Valid;
