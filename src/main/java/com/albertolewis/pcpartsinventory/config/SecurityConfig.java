@@ -20,15 +20,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Allow unauthenticated access to the registration endpoint, but require authentication for all other endpoints
+        // // Allow unauthenticated access to registration and login,
+        //// but require authentication for all other endpoints
         http.authorizeHttpRequests(auth -> auth
                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
                 .anyRequest().authenticated()
 
         );
-        // Disable CSRF protection for the registration endpoint
-        http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/auth/register"));
+        // Disable CSRF protection for the registration and login endpoints
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/auth/register", "/api/auth/login"));
         return http.build();
     }
 }

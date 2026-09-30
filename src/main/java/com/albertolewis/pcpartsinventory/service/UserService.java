@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory.service;
 
+import com.albertolewis.pcpartsinventory.dto.LoginRequest;
 import com.albertolewis.pcpartsinventory.dto.RegisterRequest;
 import com.albertolewis.pcpartsinventory.model.User;
 import com.albertolewis.pcpartsinventory.repository.UserRepository;
@@ -36,5 +37,16 @@ public class UserService {
         User user = new User(registerRequest.getUsername(), registerRequest.getEmail(), encodedPassword);
 
         return userRepository.save(user);
+    }
+
+    public User loginUser(LoginRequest loginRequest) {
+        User user = userRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password");
+        }
+
+        return user;
     }
 }

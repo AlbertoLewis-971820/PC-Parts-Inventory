@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory.controller;
 
+import com.albertolewis.pcpartsinventory.dto.LoginRequest;
 import com.albertolewis.pcpartsinventory.dto.RegisterRequest;
 import com.albertolewis.pcpartsinventory.dto.UserResponse;
 import com.albertolewis.pcpartsinventory.model.User;
@@ -29,6 +30,13 @@ public class AuthController {
         User user = userService.registerUser(registerRequest);
         UserResponse response = new UserResponse(user.getId(), user.getUsername(), user.getEmail());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
+        User user = userService.loginUser(loginRequest);
+        UserResponse response = new UserResponse(user.getId(), user.getUsername(), user.getEmail());
+        return ResponseEntity.ok(response);
     }
 
 
