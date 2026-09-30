@@ -1,7 +1,0 @@
-$kind: http-request
-url: http://localhost:8080/api/pcparts
-method: GET
-auth:
-  type: noauth
-settings: {}
-order: 2000

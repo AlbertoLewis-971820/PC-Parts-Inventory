@@ -1,5 +1,0 @@
-workspace:
-  id: f4f57c08-1181-4276-8604-fb1e79635293
-cloudResources:
-  collections:
-    ../postman/collections/PcPartsInventory: 23561563-90f5d60f-8cab-4173-8baa-b3a12c2ce521
