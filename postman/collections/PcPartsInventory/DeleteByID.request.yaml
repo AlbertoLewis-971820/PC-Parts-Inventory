@@ -1,0 +1,7 @@
+$kind: http-request
+url: http://localhost:8080/api/pcparts/1
+method: DELETE
+auth:
+  type: noauth
+settings: {}
+order: 3000
