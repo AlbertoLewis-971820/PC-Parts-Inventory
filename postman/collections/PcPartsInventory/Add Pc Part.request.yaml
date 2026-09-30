@@ -1,0 +1,17 @@
+$kind: http-request
+url: http://localhost:8080/api/pcparts
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "name": "Ryzen 7 7800X3D",
+      "category": "CPU",
+      "manufacturer": "AMD",
+      "price": 349.99,
+      "quantity": 3
+    }
+auth:
+  type: noauth
+settings: {}
+order: 1000
