@@ -1,6 +1,7 @@
 package com.albertolewis.pcpartsinventory.config;
 
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,12 +30,31 @@ public class SecurityConfig {
         //// but require authentication for all other endpoints
         http.authorizeHttpRequests(auth -> auth
                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login", "/api/auth/logout").permitAll()
                 .anyRequest().authenticated()
 
         );
+
         // Disable CSRF protection for the registration and login endpoints
-        http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/auth/register", "/api/auth/login"));
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/logout"));
+
+        // Logout configuration
+        http.logout(logout -> logout
+                .logoutUrl("/api/auth/logout")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                })
+        );
+
+        //Use AuthenticationEntryPoint to handle unauthorized access
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                })
+        );
         return http.build();
     }
 
