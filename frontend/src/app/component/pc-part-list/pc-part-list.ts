@@ -1,5 +1,7 @@
 import { PcPart } from '../../models/pc-part';
 import { PcPartService } from '../../services/pc-part-service';
+import { AuthService } from '../../services/auth-service';
+//import { LoginRequest } from '../../services/auth-service';
 import { Component, OnInit } from '@angular/core';
 import { signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -27,9 +29,13 @@ export class PcPartList implements OnInit {
 
 
 
-  constructor(private pcPartService: PcPartService) {
+  constructor(private pcPartService: PcPartService, private authService: AuthService) {
 
   }
+
+
+
+
 startEditing(part: PcPart): void {
 
   this.editingPart = { ...part }; // Create a copy of the part to edit
@@ -223,5 +229,7 @@ deletePcPart(id: number | undefined): void {
         console.error('Error fetching PC parts:', error);
       }
     );
+
+
   }
 }

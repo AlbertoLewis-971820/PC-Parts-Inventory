@@ -16,10 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -58,6 +56,20 @@ public class AuthController {
         UserResponse userResponse = new UserResponse(user.getId(), user.getUsername(), user.getEmail());
         return ResponseEntity.ok(userResponse);
 
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
+
+        User user = userService.getUserByUsername(authentication.getName());
+        UserResponse userResponse = new UserResponse(user.getId(), user.getUsername(), user.getEmail());
+        return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping("/csrf")
+    public ResponseEntity<?> getCsrfToken(CsrfToken csrfToken) {
+
+        return ResponseEntity.ok(csrfToken);
     }
 
 

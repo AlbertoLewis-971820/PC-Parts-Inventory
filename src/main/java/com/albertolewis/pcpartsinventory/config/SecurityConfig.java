@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfig {
@@ -34,9 +35,14 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
 
         );
+        //Create CookieCSRFTokenRepository to store CSRF token in a cookie
+        CookieCsrfTokenRepository cookieCsrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
 
-        // Disable CSRF protection for the registration and login endpoints
-        http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/logout"));
+        //// Store CSRF tokens in a cookie and temporarily ignore CSRF
+        //// for authentication endpoints while building the authentication flow
+        http.csrf(csrf -> csrf
+                .csrfTokenRepository(cookieCsrfTokenRepository)
+                .ignoringRequestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/logout"));
 
         // Logout configuration
         http.logout(logout -> logout
