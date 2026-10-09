@@ -34,6 +34,11 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient) { }
 
+
+  getCsrfToken(): Observable<unknown> {
+    return this.httpClient.get(`${this.apiUrl}/csrf`, { withCredentials: true });
+  }
+
   getCurrentUser(): Observable<User> {
     return this.httpClient.get<User>(`${this.apiUrl}/me`).pipe(
       tap((user) => {

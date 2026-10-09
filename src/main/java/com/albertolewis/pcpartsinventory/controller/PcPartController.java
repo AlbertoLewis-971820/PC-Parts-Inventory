@@ -5,6 +5,7 @@ import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,23 +28,23 @@ public class PcPartController {
 
     //Show all pc parts
     @GetMapping
-    public List<PcPart> getAllPcParts() {
-        return pcPartService.getAllPcParts();
+    public List<PcPart> getAllPcParts(Authentication authentication) {
+        return pcPartService.getAllPcParts(authentication.getName());
     }
 
     //Get a pc part by id
     @GetMapping("/{id}")
-    public ResponseEntity<PcPart> getPcPartById(@PathVariable Long id) {
-        return pcPartService.getPcPartById(id)
+    public ResponseEntity<PcPart> getPcPartById(@PathVariable Long id, Authentication authentication) {
+        return pcPartService.getPcPartById(id, authentication.getName())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     //Delete a pc part
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePcPart(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePcPart(@PathVariable Long id, Authentication authentication) {
 
-        boolean deleted = pcPartService.deletePcPart(id);
+        boolean deleted = pcPartService.deletePcPart(id, authentication.getName());
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {
@@ -72,8 +73,8 @@ public class PcPartController {
 
     //Update a pc part
     @PutMapping("/{id}")
-    public ResponseEntity<PcPart> updatePcPart(@PathVariable Long id, @Valid @RequestBody PcPart pcPart) {
-        Optional<PcPart> updatedPcPart = pcPartService.updatePcPart(id, pcPart);
+    public ResponseEntity<PcPart> updatePcPart(@PathVariable Long id, @Valid @RequestBody PcPart pcPart, Authentication authentication) {
+        Optional<PcPart> updatedPcPart = pcPartService.updatePcPart(id, pcPart, authentication.getName());
         return updatedPcPart
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -81,16 +82,17 @@ public class PcPartController {
 
     //Update the quantity of a pc part
     @PatchMapping("/{id}/restock")
-    public ResponseEntity<PcPart> restockPcPart(@PathVariable Long id, @Valid @RequestBody RestockRequest restockRequest) {
+    public ResponseEntity<PcPart> restockPcPart(@PathVariable Long id, @Valid @RequestBody RestockRequest restockRequest, Authentication authentication) {
 
-        PcPart updatedPcPart = pcPartService.restockPcPart(id, restockRequest);
+        PcPart updatedPcPart = pcPartService.restockPcPart(id, restockRequest, authentication.getName());
         return ResponseEntity.ok(updatedPcPart);
     }
 
     //Add a pc part
     @PostMapping
-    public PcPart addPcPart(@Valid @RequestBody PcPart pcPart) {
-        return pcPartService.savePcPart(pcPart);
+    public PcPart addPcPart(@Valid @RequestBody PcPart pcPart, Authentication authentication) {
+
+        return pcPartService.savePcPart(pcPart, authentication.getName());
     }
 
 }

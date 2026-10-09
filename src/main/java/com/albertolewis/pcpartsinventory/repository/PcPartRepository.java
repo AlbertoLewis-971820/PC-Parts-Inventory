@@ -5,6 +5,7 @@ import com.albertolewis.pcpartsinventory.model.PcPart;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PcPartRepository extends JpaRepository<PcPart, Long> {
 
@@ -16,5 +17,9 @@ public interface PcPartRepository extends JpaRepository<PcPart, Long> {
 
     //Grab all pc parts by category
     List<PcPart> findAllByCategory(PartsCategory category);
+
+    Optional<PcPart> findByIdAndOwner_Id(Long id, Long ownerId);
+
+    List<PcPart> findAllByOwner_Id(Long ownerId);
 
 }

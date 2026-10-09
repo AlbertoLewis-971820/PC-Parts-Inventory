@@ -23,7 +23,6 @@ export class PcPartList implements OnInit {
   categorySearch: string = '';
 
   lowStockThreshold: number | null | string = null;
-
   restockPartId: number | null = null;
   restockQuantity: number | null = null;
 

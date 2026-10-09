@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 @Configuration
 public class SecurityConfig {
@@ -31,6 +32,7 @@ public class SecurityConfig {
         //// but require authentication for all other endpoints
         http.authorizeHttpRequests(auth -> auth
                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/auth/csrf").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login", "/api/auth/logout").permitAll()
                 .anyRequest().authenticated()
 
@@ -38,11 +40,14 @@ public class SecurityConfig {
         //Create CookieCSRFTokenRepository to store CSRF token in a cookie
         CookieCsrfTokenRepository cookieCsrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
 
+        CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
+
         //// Store CSRF tokens in a cookie and temporarily ignore CSRF
         //// for authentication endpoints while building the authentication flow
         http.csrf(csrf -> csrf
                 .csrfTokenRepository(cookieCsrfTokenRepository)
-                .ignoringRequestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/logout"));
+                .csrfTokenRequestHandler(requestHandler)
+        );
 
         // Logout configuration
         http.logout(logout -> logout

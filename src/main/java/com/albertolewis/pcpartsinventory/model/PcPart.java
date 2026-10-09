@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,12 +10,50 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 @Entity
+
 public class PcPart {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User owner;
+
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
+    private String name;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PartsCategory category;
+    @NotBlank
+    private String manufacturer;
+    @NotNull
+    @Positive
+    private BigDecimal price;
+    @NotNull
+    @PositiveOrZero
+    private Integer quantity;
 
+    public PcPart() {
+
+    }
+
+    public PcPart(String name, PartsCategory category, String manufacturer, BigDecimal price, Integer quantity) {
+        this.name = name;
+        this.category = category;
+        this.manufacturer = manufacturer;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
     public Long getId() {
         return id;
@@ -63,17 +102,6 @@ public class PcPart {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-    public PcPart(){
-
-    }
-
-    public PcPart(String name, PartsCategory category, String manufacturer, BigDecimal price, Integer quantity) {
-        this.name = name;
-        this.category = category;
-        this.manufacturer = manufacturer;
-        this.price = price;
-        this.quantity = quantity;
-    }
 
     //To string method override
     @Override
@@ -87,23 +115,5 @@ public class PcPart {
                 ", quantity=" + quantity +
                 '}';
     }
-
-    @NotBlank
-    private String name;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private PartsCategory category;
-
-    @NotBlank
-    private String manufacturer;
-
-    @NotNull
-    @Positive
-    private BigDecimal price;
-
-    @NotNull
-    @PositiveOrZero
-    private Integer quantity;
 
 }

@@ -4,6 +4,7 @@ import com.albertolewis.pcpartsinventory.dto.RestockRequest;
 import com.albertolewis.pcpartsinventory.exception.PcPartNotFoundException;
 import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
+import com.albertolewis.pcpartsinventory.model.User;
 import com.albertolewis.pcpartsinventory.repository.PcPartRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,37 +16,51 @@ public class PcPartService {
 
     private final PcPartRepository pcPartRepository;
 
-    public PcPartService(PcPartRepository pcPartRepository) {
+    private final UserService userService;
+
+    public PcPartService(PcPartRepository pcPartRepository, UserService userService) {
         this.pcPartRepository = pcPartRepository;
+        this.userService = userService;
     }
 
     //Return all pc parts
-    public List<PcPart> getAllPcParts() {
-        return pcPartRepository.findAll();
+    public List<PcPart> getAllPcParts(String username) {
+        User user = userService.getUserByUsername(username);
+
+        return pcPartRepository.findAllByOwner_Id(user.getId());
     }
 
     //Return a pc part by id
-    public Optional<PcPart> getPcPartById(Long id) {
-        return pcPartRepository.findById(id);
+    public Optional<PcPart> getPcPartById(Long id, String username) {
+        User user = userService.getUserByUsername(username);
+
+        return pcPartRepository.findByIdAndOwner_Id(id, user.getId());
     }
 
     //Accept a Pc part sae and return the saved Pc part
-    public PcPart savePcPart(PcPart pcPart) {
+    public PcPart savePcPart(PcPart pcPart, String username) {
+
+        User user = userService.getUserByUsername(username);
+        pcPart.setOwner(user);
+
         return pcPartRepository.save(pcPart);
     }
 
     //Delete a pc part by id
-    public boolean deletePcPart(Long id) {
-        if (pcPartRepository.existsById(id)) {
-            pcPartRepository.deleteById(id);
+    public boolean deletePcPart(Long id, String username) {
+        User user = userService.getUserByUsername(username);
+        Optional<PcPart> pcPart = pcPartRepository.findByIdAndOwner_Id(id, user.getId());
+        if (pcPart.isPresent()) {
+            pcPartRepository.delete(pcPart.get());
             return true;
         } else {
             return false;
         }
     }
+
     //Find all pc parts below threshold
-    public List<PcPart> getAllByQuantityLessThan(int threshold){
-        if(threshold < 0){
+    public List<PcPart> getAllByQuantityLessThan(int threshold) {
+        if (threshold < 0) {
             throw new IllegalArgumentException("Threshold must be a non-negative integer.");
         }
         return pcPartRepository.findAllByQuantityLessThan(threshold);
@@ -53,43 +68,45 @@ public class PcPartService {
 
     //Find all pc parts by manufacturer name
     public List<PcPart> getAllByManufacturer(String name) {
-        if(name == null || name.isBlank()){
+        if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Manufacturer cannot be null or empty.");
         }
         return pcPartRepository.findAllByManufacturerIgnoreCase(name);
     }
 
     //Find all pc parts by category
-    public List<PcPart> getAllByCategory(String name){
+    public List<PcPart> getAllByCategory(String name) {
 
-        if(name == null || name.isBlank()){
+        if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Category cannot be null or empty.");
         }
         String normalizedName = name.strip().toUpperCase();
         PartsCategory category;
-        try{
+        try {
             category = PartsCategory.valueOf(normalizedName);
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid category: " + normalizedName);
         }
         return pcPartRepository.findAllByCategory(category);
     }
 
     //Restock a pc part
-    public PcPart restockPcPart(Long id, RestockRequest restockRequest){
+    public PcPart restockPcPart(Long id, RestockRequest restockRequest, String username) {
+        User owner = userService.getUserByUsername(username);
 
-        PcPart pcPart =  pcPartRepository.findById(id)
+        PcPart pcPart = pcPartRepository.findByIdAndOwner_Id(id, owner.getId())
                 .orElseThrow(() -> new PcPartNotFoundException("Pc Part id: " + id + " not found"));
 
-        Integer newQuantity = restockRequest.getQuantity() +  pcPart.getQuantity();
+        Integer newQuantity = restockRequest.getQuantity() + pcPart.getQuantity();
         pcPart.setQuantity(newQuantity);
         return pcPartRepository.save(pcPart);
     }
 
 
     //Update a pc part by id
-    public Optional<PcPart> updatePcPart(Long id, PcPart pcPart) {
-        return pcPartRepository.findById(id)
+    public Optional<PcPart> updatePcPart(Long id, PcPart pcPart, String username) {
+        User owner = userService.getUserByUsername(username);
+        return pcPartRepository.findByIdAndOwner_Id(id, owner.getId())
                 .map(existingPcPart -> {
                     existingPcPart.setName(pcPart.getName());
                     existingPcPart.setCategory(pcPart.getCategory());
