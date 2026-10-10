@@ -9,6 +9,7 @@ import com.albertolewis.pcpartsinventory.repository.PcPartRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -67,27 +68,30 @@ public class PcPartService {
     }
 
     //Find all pc parts by manufacturer name
-    public List<PcPart> getAllByManufacturer(String name) {
+    public List<PcPart> getAllByManufacturer(String name, String username) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Manufacturer cannot be null or empty.");
         }
-        return pcPartRepository.findAllByManufacturerIgnoreCase(name);
+        User user = userService.getUserByUsername(username);
+
+        return pcPartRepository.findAllByOwner_IdAndManufacturerIgnoreCase(user.getId(), name);
     }
 
     //Find all pc parts by category
-    public List<PcPart> getAllByCategory(String name) {
-
+    public List<PcPart> getAllByCategory(String name, String username) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Category cannot be null or empty.");
         }
-        String normalizedName = name.strip().toUpperCase();
+        User user = userService.getUserByUsername(username);
+
+        String normalizedName = name.strip().toUpperCase(Locale.ROOT);
         PartsCategory category;
         try {
             category = PartsCategory.valueOf(normalizedName);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid category: " + normalizedName);
         }
-        return pcPartRepository.findAllByCategory(category);
+        return pcPartRepository.findAllByOwner_IdAndCategory(user.getId(), category);
     }
 
     //Restock a pc part

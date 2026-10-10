@@ -13,10 +13,10 @@ public interface PcPartRepository extends JpaRepository<PcPart, Long> {
     List<PcPart> findAllByQuantityLessThan(int threshold);
 
     //Grab all pc parts by manufacturer name
-    List<PcPart> findAllByManufacturerIgnoreCase(String manufacturer);
+    List<PcPart> findAllByOwner_IdAndManufacturerIgnoreCase(Long ownerId, String manufacturer);
 
     //Grab all pc parts by category
-    List<PcPart> findAllByCategory(PartsCategory category);
+    List<PcPart> findAllByOwner_IdAndCategory(Long ownerId, PartsCategory category);
 
     Optional<PcPart> findByIdAndOwner_Id(Long id, Long ownerId);
 

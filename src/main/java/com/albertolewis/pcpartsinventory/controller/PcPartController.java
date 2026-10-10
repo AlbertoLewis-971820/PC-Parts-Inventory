@@ -60,14 +60,14 @@ public class PcPartController {
 
     //Find all pc parts by manufacturer name
     @GetMapping("/manufacturer")
-    public List<PcPart> getAllByManufacturer(@RequestParam String name) {
-        return pcPartService.getAllByManufacturer(name);
+    public List<PcPart> getAllByManufacturer(@RequestParam String name, Authentication authentication) {
+        return pcPartService.getAllByManufacturer(name, authentication.getName());
     }
 
     //Find all pc parts by category
     @GetMapping("/category")
-    public List<PcPart> getAllByCategory(@RequestParam String name) {
-        return pcPartService.getAllByCategory(name);
+    public List<PcPart> getAllByCategory(@RequestParam String name, Authentication authentication) {
+        return pcPartService.getAllByCategory(name, authentication.getName());
     }
 
 
