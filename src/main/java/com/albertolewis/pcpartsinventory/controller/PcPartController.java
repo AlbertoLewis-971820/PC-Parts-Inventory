@@ -1,6 +1,7 @@
 package com.albertolewis.pcpartsinventory.controller;
 
 import com.albertolewis.pcpartsinventory.dto.CreatePcPartRequest;
+import com.albertolewis.pcpartsinventory.dto.PcPartResponse;
 import com.albertolewis.pcpartsinventory.dto.RestockRequest;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
@@ -92,10 +93,10 @@ public class PcPartController {
 
     //Add a pc part
     @PostMapping
-    public ResponseEntity<PcPart> addPcPart(@Valid @RequestBody CreatePcPartRequest pcPartRequest, Authentication authentication) {
+    public ResponseEntity<PcPartResponse> addPcPart(@Valid @RequestBody CreatePcPartRequest pcPartRequest, Authentication authentication) {
 
         PcPart savedPcPart = pcPartService.savePcPart(pcPartRequest, authentication.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPcPart);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pcPartService.toResponse(savedPcPart));
     }
 
 }

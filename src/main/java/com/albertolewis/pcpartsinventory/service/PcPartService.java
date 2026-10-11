@@ -1,6 +1,7 @@
 package com.albertolewis.pcpartsinventory.service;
 
 import com.albertolewis.pcpartsinventory.dto.CreatePcPartRequest;
+import com.albertolewis.pcpartsinventory.dto.PcPartResponse;
 import com.albertolewis.pcpartsinventory.dto.RestockRequest;
 import com.albertolewis.pcpartsinventory.exception.PcPartNotFoundException;
 import com.albertolewis.pcpartsinventory.model.PartsCategory;
@@ -23,6 +24,18 @@ public class PcPartService {
     public PcPartService(PcPartRepository pcPartRepository, UserService userService) {
         this.pcPartRepository = pcPartRepository;
         this.userService = userService;
+    }
+
+    //Response method
+    public PcPartResponse toResponse(PcPart pcPart) {
+        return new PcPartResponse(
+                pcPart.getId(),
+                pcPart.getName(),
+                pcPart.getCategory(),
+                pcPart.getManufacturer(),
+                pcPart.getPrice(),
+                pcPart.getQuantity()
+        );
     }
 
     //Return all pc parts
