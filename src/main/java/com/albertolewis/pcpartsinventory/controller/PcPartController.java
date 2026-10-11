@@ -1,10 +1,11 @@
 package com.albertolewis.pcpartsinventory.controller;
 
+import com.albertolewis.pcpartsinventory.dto.CreatePcPartRequest;
 import com.albertolewis.pcpartsinventory.dto.RestockRequest;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
 import jakarta.validation.Valid;
-import org.jspecify.annotations.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -91,9 +92,10 @@ public class PcPartController {
 
     //Add a pc part
     @PostMapping
-    public PcPart addPcPart(@Valid @RequestBody PcPart pcPart, Authentication authentication) {
+    public ResponseEntity<PcPart> addPcPart(@Valid @RequestBody CreatePcPartRequest pcPartRequest, Authentication authentication) {
 
-        return pcPartService.savePcPart(pcPart, authentication.getName());
+        PcPart savedPcPart = pcPartService.savePcPart(pcPartRequest, authentication.getName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedPcPart);
     }
 
 }

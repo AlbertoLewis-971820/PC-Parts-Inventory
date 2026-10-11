@@ -1,5 +1,6 @@
 package com.albertolewis.pcpartsinventory.service;
 
+import com.albertolewis.pcpartsinventory.dto.CreatePcPartRequest;
 import com.albertolewis.pcpartsinventory.dto.RestockRequest;
 import com.albertolewis.pcpartsinventory.exception.PcPartNotFoundException;
 import com.albertolewis.pcpartsinventory.model.PartsCategory;
@@ -38,10 +39,16 @@ public class PcPartService {
         return pcPartRepository.findByIdAndOwner_Id(id, user.getId());
     }
 
-    //Accept a Pc part sae and return the saved Pc part
-    public PcPart savePcPart(PcPart pcPart, String username) {
+    // Create a new pc part without id and owner, and save it to the database
+    public PcPart savePcPart(CreatePcPartRequest pcPartRequest, String username) {
 
         User user = userService.getUserByUsername(username);
+        PcPart pcPart = new PcPart();
+        pcPart.setName(pcPartRequest.getName());
+        pcPart.setCategory(pcPartRequest.getCategory());
+        pcPart.setManufacturer(pcPartRequest.getManufacturer());
+        pcPart.setPrice(pcPartRequest.getPrice());
+        pcPart.setQuantity(pcPartRequest.getQuantity());
         pcPart.setOwner(user);
 
         return pcPartRepository.save(pcPart);
