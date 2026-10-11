@@ -4,6 +4,7 @@ import com.albertolewis.pcpartsinventory.dto.RestockRequest;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
 import jakarta.validation.Valid;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -54,8 +55,8 @@ public class PcPartController {
 
     //Return a list of low stock pc parts
     @GetMapping("/low-stock")
-    public List<PcPart> getAllByQuantityLessThan(@RequestParam Integer threshold) {
-        return pcPartService.getAllByQuantityLessThan(threshold);
+    public List<PcPart> getAllByQuantityLessThan(@RequestParam Integer threshold, Authentication authentication) {
+        return pcPartService.getAllByQuantityLessThan(threshold, authentication.getName());
     }
 
     //Find all pc parts by manufacturer name

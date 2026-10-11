@@ -60,11 +60,12 @@ public class PcPartService {
     }
 
     //Find all pc parts below threshold
-    public List<PcPart> getAllByQuantityLessThan(int threshold) {
+    public List<PcPart> getAllByQuantityLessThan(Integer threshold, String username) {
         if (threshold < 0) {
             throw new IllegalArgumentException("Threshold must be a non-negative integer.");
         }
-        return pcPartRepository.findAllByQuantityLessThan(threshold);
+        User user = userService.getUserByUsername(username);
+        return pcPartRepository.findAllByOwner_IdAndQuantityLessThan(user.getId(), threshold);
     }
 
     //Find all pc parts by manufacturer name
