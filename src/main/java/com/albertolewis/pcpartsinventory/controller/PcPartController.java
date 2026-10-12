@@ -3,6 +3,7 @@ package com.albertolewis.pcpartsinventory.controller;
 import com.albertolewis.pcpartsinventory.dto.CreatePcPartRequest;
 import com.albertolewis.pcpartsinventory.dto.PcPartResponse;
 import com.albertolewis.pcpartsinventory.dto.RestockRequest;
+import com.albertolewis.pcpartsinventory.dto.UpdatePcPartRequest;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
 import jakarta.validation.Valid;
@@ -31,13 +32,13 @@ public class PcPartController {
 
     //Show all pc parts
     @GetMapping
-    public List<PcPart> getAllPcParts(Authentication authentication) {
+    public List<PcPartResponse> getAllPcParts(Authentication authentication) {
         return pcPartService.getAllPcParts(authentication.getName());
     }
 
     //Get a pc part by id
     @GetMapping("/{id}")
-    public ResponseEntity<PcPart> getPcPartById(@PathVariable Long id, Authentication authentication) {
+    public ResponseEntity<PcPartResponse> getPcPartById(@PathVariable Long id, Authentication authentication) {
         return pcPartService.getPcPartById(id, authentication.getName())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -57,27 +58,27 @@ public class PcPartController {
 
     //Return a list of low stock pc parts
     @GetMapping("/low-stock")
-    public List<PcPart> getAllByQuantityLessThan(@RequestParam Integer threshold, Authentication authentication) {
+    public List<PcPartResponse> getAllByQuantityLessThan(@RequestParam Integer threshold, Authentication authentication) {
         return pcPartService.getAllByQuantityLessThan(threshold, authentication.getName());
     }
 
     //Find all pc parts by manufacturer name
     @GetMapping("/manufacturer")
-    public List<PcPart> getAllByManufacturer(@RequestParam String name, Authentication authentication) {
+    public List<PcPartResponse> getAllByManufacturer(@RequestParam String name, Authentication authentication) {
         return pcPartService.getAllByManufacturer(name, authentication.getName());
     }
 
     //Find all pc parts by category
     @GetMapping("/category")
-    public List<PcPart> getAllByCategory(@RequestParam String name, Authentication authentication) {
+    public List<PcPartResponse> getAllByCategory(@RequestParam String name, Authentication authentication) {
         return pcPartService.getAllByCategory(name, authentication.getName());
     }
 
 
     //Update a pc part
     @PutMapping("/{id}")
-    public ResponseEntity<PcPart> updatePcPart(@PathVariable Long id, @Valid @RequestBody PcPart pcPart, Authentication authentication) {
-        Optional<PcPart> updatedPcPart = pcPartService.updatePcPart(id, pcPart, authentication.getName());
+    public ResponseEntity<PcPartResponse> updatePcPart(@PathVariable Long id, @Valid @RequestBody UpdatePcPartRequest updatePcPartRequest, Authentication authentication) {
+        Optional<PcPartResponse> updatedPcPart = pcPartService.updatePcPart(id, updatePcPartRequest, authentication.getName());
         return updatedPcPart
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -85,9 +86,9 @@ public class PcPartController {
 
     //Update the quantity of a pc part
     @PatchMapping("/{id}/restock")
-    public ResponseEntity<PcPart> restockPcPart(@PathVariable Long id, @Valid @RequestBody RestockRequest restockRequest, Authentication authentication) {
+    public ResponseEntity<PcPartResponse> restockPcPart(@PathVariable Long id, @Valid @RequestBody RestockRequest restockRequest, Authentication authentication) {
 
-        PcPart updatedPcPart = pcPartService.restockPcPart(id, restockRequest, authentication.getName());
+        PcPartResponse updatedPcPart = pcPartService.restockPcPart(id, restockRequest, authentication.getName());
         return ResponseEntity.ok(updatedPcPart);
     }
 
