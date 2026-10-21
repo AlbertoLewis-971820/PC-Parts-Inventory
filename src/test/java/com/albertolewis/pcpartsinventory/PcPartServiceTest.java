@@ -7,7 +7,6 @@ import com.albertolewis.pcpartsinventory.model.PartsCategory;
 import com.albertolewis.pcpartsinventory.model.PcPart;
 import com.albertolewis.pcpartsinventory.model.User;
 import com.albertolewis.pcpartsinventory.repository.PcPartRepository;
-import com.albertolewis.pcpartsinventory.service.CustomUserDetailsService;
 import com.albertolewis.pcpartsinventory.service.PcPartService;
 import com.albertolewis.pcpartsinventory.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
