@@ -1,44 +1,91 @@
-<form (ngSubmit)="register()">
-  <label for="username">Username</label>
-  <input
-    [(ngModel)]="username"
-    id="username"
-    name="username"
-    required
-    type="text"
-  >
+<div class="register-page">
+  <div class="register-card">
 
-  <label for="email">Email</label>
-  <input
-    [(ngModel)]="email"
-    id="email"
-    name="email"
-    required
-    type="email"
-  >
+    <div class="brand">
+      <div class="brand-icon">PC</div>
+      <span>PC Part Vault</span>
+    </div>
 
-  <label for="password">Password</label>
-  <input
-    [(ngModel)]="password"
-    id="password"
-    name="password"
-    required
-    type="password"
-  >
+    <div class="register-header">
+      <h1>Create an account</h1>
+      <p>Join PC Part Vault and start managing your hardware inventory.</p>
+    </div>
 
-  <label for="confirmPassword">Confirm Password</label>
-  <input
-    [(ngModel)]="confirmPassword"
-    id="confirmPassword"
-    name="confirmPassword"
-    required
-    type="password"
-  >
+    <form #registerForm="ngForm" (ngSubmit)="register()">
 
-  <button type="submit">Register</button>
-  @if (errorMessage()) {
-  <p>{{ errorMessage() }}</p>
-  }
-</form>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          [(ngModel)]="username"
+          autocomplete="username"
+          id="username"
+          name="username"
+          placeholder="Choose a username"
+          required
+          type="text"
+        />
+      </div>
 
-<p> Already have an account? <a routerLink="/login">Login here</a>.</p>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          [(ngModel)]="email"
+          autocomplete="email"
+          email
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+          type="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          [(ngModel)]="password"
+          autocomplete="new-password"
+          id="password"
+          name="password"
+          placeholder="Create a password"
+          required
+          type="password"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          [(ngModel)]="confirmPassword"
+          autocomplete="new-password"
+          id="confirmPassword"
+          name="confirmPassword"
+          placeholder="Confirm your password"
+          required
+          type="password"
+        />
+      </div>
+
+      @if (errorMessage()) {
+      <div class="error-message" role="alert">
+        {{ errorMessage() }}
+      </div>
+      }
+
+      <button
+        [disabled]="registerForm.invalid || isLoading()"
+        class="register-button"
+        type="submit"
+      >
+        {{ isLoading() ? 'Creating Account...' : 'Create Account' }}
+      </button>
+
+    </form>
+
+    <p class="login-link">
+      Already have an account?
+      <a routerLink="/login">Sign in</a>
+    </p>
+
+  </div>
+</div>

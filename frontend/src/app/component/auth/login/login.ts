@@ -13,17 +13,19 @@ export class Login {
   username: string = '';
   password: string = '';
   errorMessage = signal('');
+  isLoading = signal(false);
 
   constructor(private authService: AuthService, private router: Router) { }
 
   login(): void {
+    if (this.isLoading()) return;
+    this.isLoading.set(true);
     this.errorMessage.set('');
     // Implement login logic here
     const loginRequest: LoginRequest = {
       username: this.username,
       password: this.password
     };
-
 
      this.authService.getCsrfToken().subscribe({
        next: () => {
@@ -39,22 +41,23 @@ export class Login {
                error: (error) => {
                  console.error('Failed to retrieve CSRF token:', error);
                  this.errorMessage.set('Login successful, but failed to retrieve CSRF token. Please try again.');
+                 this.isLoading.set(false);
                }
              });
            },
            error: (error) => {
              console.error('Login failed:', error);
              this.errorMessage.set('Login failed. Please check your username and password.');
+             this.isLoading.set(false);
            }
          });
        },
        error: (error) => {
          console.error('Failed to retrieve CSRF token:', error);
          this.errorMessage.set('Failed to retrieve CSRF token. Please try again.');
+         this.isLoading.set(false);
        }
      });
-
-
   }
 
 }

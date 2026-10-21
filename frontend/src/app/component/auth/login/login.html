@@ -1,23 +1,56 @@
-<form (ngSubmit)="login()">
-  <label for="username">Username</label>
-  <input
-    [(ngModel)]="username"
-    id="username"
-    name="username"
-    type="text"
-  >
+<div class="login-page">
+  <div class="login-card">
+    <div class="brand">
+      <div class="brand-icon">PC</div>
+      <span>PC Part Vault</span>
+    </div>
 
-  <label for="password">Password</label>
-  <input
-    [(ngModel)]="password"
-    id="password"
-    name="password"
-    type="password"
-  >
+    <div class="login-header">
+      <h1>Welcome back</h1>
+      <p>Sign in to manage your PC parts inventory.</p>
+    </div>
 
+    <form (ngSubmit)="login()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          [(ngModel)]="username"
+          autocomplete="username"
+          id="username"
+          name="username"
+          placeholder="Enter your username"
+          required
+          type="text"
+        />
+      </div>
 
-  <button type="submit">Login</button>
-  @if (errorMessage()) {
-  <p>{{ errorMessage() }}</p>
-  }
-</form>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          [(ngModel)]="password"
+          autocomplete="current-password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+          type="password"
+        />
+      </div>
+
+      @if (errorMessage()) {
+      <div class="error-message" role="alert">
+        {{ errorMessage() }}
+      </div>
+      }
+
+      <button [disabled]="isLoading()" class="login-button" type="submit">
+        {{ isLoading() ? 'Signing In...' : 'Sign In'}}
+      </button>
+    </form>
+
+    <p class="register-link">
+      Don't have an account?
+      <a href="/register">Create an account</a>
+    </p>
+  </div>
+</div>
