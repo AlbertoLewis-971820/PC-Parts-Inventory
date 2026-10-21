@@ -1,8 +1,43 @@
-<main>
-  <button (click)="logout()" type="button">Logout</button>
+<div class="inventory-page">
 
-  <app-pc-part-form (partAdded)="partList.addPart($event)">
-  </app-pc-part-form>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="navbar-content">
 
-  <app-pc-part-list #partList></app-pc-part-list>
-</main>
+      <div class="brand">
+        <div class="brand-icon">PV</div>
+
+        <div class="brand-text">
+          <span class="brand-name">PC Part Vault</span>
+          <span class="brand-subtitle">Hardware Inventory</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <span class="nav-label">My Inventory</span>
+
+        <button
+          (click)="logout()"
+          class="logout-button"
+          type="button"
+        >
+          Logout
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Inventory Content -->
+  <main class="inventory-content">
+
+    <app-pc-part-form
+      (partAdded)="partList.addPart($event)">
+    </app-pc-part-form>
+
+    <app-pc-part-list #partList>
+    </app-pc-part-list>
+
+  </main>
+
+</div>

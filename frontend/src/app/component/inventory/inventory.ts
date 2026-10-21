@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { PcPartForm } from '../pc-part-form/pc-part-form';
 import { PcPartList } from '../pc-part-list/pc-part-list';
@@ -12,9 +13,10 @@ import { Router } from '@angular/router';
 })
 export class Inventory {
 
-
-  constructor(private authService: AuthService, private router: Router) { }
-
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   logout(): void {
     this.authService.logout().subscribe({
@@ -27,6 +29,4 @@ export class Inventory {
       }
     });
   }
-
-
 }

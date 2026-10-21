@@ -1,87 +1,165 @@
 <div class="form-container">
-  <h1>PC Part Vault</h1>
+
+  <div class="form-header">
+    <h2>Add PC Part</h2>
+    <p>Add new hardware to your personal inventory.</p>
+  </div>
 
   <form
     #partForm="ngForm"
     (ngSubmit)="addPcPart(partForm)"
     class="form-group"
+    novalidate
   >
 
-    <div class="form-section">
-      <label for="name">Name:</label>
+    <div class="form-grid">
 
-      <input
-        [(ngModel)]="newPcPart.name"
-        id="name"
-        name="name"
-        type="text"
-      />
+      <!-- Name -->
+      <div class="form-section">
+        <label for="name">Name:</label>
+
+        <input
+          #nameField="ngModel"
+          [(ngModel)]="newPcPart.name"
+          [class.invalid-input]="nameField.invalid && nameField.touched"
+          id="name"
+          maxlength="100"
+          minlength="2"
+          name="name"
+          required
+          type="text"
+        />
+
+        @if (nameField.invalid && nameField.touched) {
+        <span class="validation-error">
+            Enter a name with at least 2 characters.
+          </span>
+        }
+      </div>
+
+      <!-- Category -->
+      <div class="form-section">
+        <label for="category">Category:</label>
+
+        <select
+          #categoryField="ngModel"
+          [(ngModel)]="newPcPart.category"
+          [class.invalid-input]="categoryField.invalid && categoryField.touched"
+          class="form-select"
+          id="category"
+          name="category"
+          required
+        >
+          <option disabled value="">Select a category</option>
+          <option value="CPU">CPU</option>
+          <option value="GPU">GPU</option>
+          <option value="RAM">RAM</option>
+          <option value="STORAGE">STORAGE</option>
+          <option value="MOTHERBOARD">MOTHERBOARD</option>
+          <option value="COOLER">COOLER</option>
+          <option value="CASE">CASE</option>
+          <option value="FANS">FANS</option>
+          <option value="PSU">PSU</option>
+        </select>
+
+        @if (categoryField.invalid && categoryField.touched) {
+        <span class="validation-error">
+            Please select a category.
+          </span>
+        }
+      </div>
+
+      <!-- Manufacturer -->
+      <div class="form-section">
+        <label for="manufacturer">Manufacturer:</label>
+
+        <input
+          #manufacturerField="ngModel"
+          [(ngModel)]="newPcPart.manufacturer"
+          [class.invalid-input]="manufacturerField.invalid && manufacturerField.touched"
+          id="manufacturer"
+          maxlength="100"
+          minlength="2"
+          name="manufacturer"
+          required
+          type="text"
+        />
+
+        @if (manufacturerField.invalid && manufacturerField.touched) {
+        <span class="validation-error">
+            Enter a manufacturer with at least 2 characters.
+          </span>
+        }
+      </div>
+
+      <!-- Price -->
+      <div class="form-section">
+        <label for="price">Price:</label>
+
+        <input
+          #priceField="ngModel"
+          [(ngModel)]="newPcPart.price"
+          [class.invalid-input]="priceField.invalid && priceField.touched"
+          id="price"
+          min="0.01"
+          name="price"
+          required
+          step="0.01"
+          type="number"
+        />
+
+        @if (priceField.invalid && priceField.touched) {
+        <span class="validation-error">
+            Price must be greater than $0.
+          </span>
+        }
+      </div>
+
+      <!-- Quantity -->
+      <div class="form-section">
+        <label for="quantity">Quantity:</label>
+
+        <input
+          #quantityField="ngModel"
+          [(ngModel)]="newPcPart.quantity"
+          [class.invalid-input]="quantityField.invalid && quantityField.touched"
+          id="quantity"
+          min="0"
+          name="quantity"
+          required
+          step="1"
+          type="number"
+        />
+
+        @if (quantityField.invalid && quantityField.touched) {
+        <span class="validation-error">
+            Quantity must be zero or greater.
+          </span>
+        }
+      </div>
+
     </div>
 
-    <div class="form-section">
-      <label for="category">Category:</label>
-
-      <select
-        [(ngModel)]="newPcPart.category"
-        class="form-select"
-        id="category"
-        name="category"
-      >
-        <option disabled value="">Select a category</option>
-        <option value="CPU">CPU</option>
-        <option value="GPU">GPU</option>
-        <option value="RAM">RAM</option>
-        <option value="MOTHERBOARD">MOTHERBOARD</option>
-        <option value="COOLER">COOLER</option>
-        <option value="CASE">CASE</option>
-        <option value="FANS">FANS</option>
-        <option value="PSU">PSU</option>
-      </select>
-    </div>
-
-    <div class="form-section">
-      <label for="manufacturer">Manufacturer:</label>
-
-      <input
-        [(ngModel)]="newPcPart.manufacturer"
-        id="manufacturer"
-        name="manufacturer"
-        type="text"
-      />
-    </div>
-
-    <div class="form-section">
-      <label for="price">Price:</label>
-
-      <input
-        [(ngModel)]="newPcPart.price"
-        id="price"
-        name="price"
-        type="number"
-      />
-    </div>
-
-    <div class="form-section">
-      <label for="quantity">Quantity:</label>
-
-      <input
-        [(ngModel)]="newPcPart.quantity"
-        id="quantity"
-        name="quantity"
-        type="number"
-      />
-    </div>
-
+    <!-- Submit -->
     <button
+      [disabled]="partForm.invalid || isSubmitting"
       class="btn-primary"
       type="submit"
     >
-      Add PC Part
+      {{ isSubmitting ? 'Adding Part...' : 'Add PC Part' }}
     </button>
 
+    <!-- Error Message -->
     @if (errorMessage) {
-    <p class="error">
+    <p class="error" role="alert">
       {{ errorMessage }}
+    </p>
+    }
+
+    <!-- Success Message -->
+    @if (successMessage) {
+    <p class="success" role="status">
+      {{ successMessage }}
     </p>
     }
 

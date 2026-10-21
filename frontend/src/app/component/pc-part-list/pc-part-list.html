@@ -1,6 +1,12 @@
 <div class="list-container">
-  <h1>Vault List</h1>
+  <div class="list-header">
+    <div>
+      <h2>Vault List</h2>
+      <p>Manage and organize your PC hardware inventory.</p>
+    </div>
+  </div>
 
+  <!-- Search and Filters -->
   <div class="search-container">
 
     <div class="filter-group">
@@ -15,6 +21,7 @@
           <option value="CPU">CPU</option>
           <option value="GPU">GPU</option>
           <option value="RAM">RAM</option>
+          <option value="STORAGE">STORAGE</option>
           <option value="MOTHERBOARD">MOTHERBOARD</option>
           <option value="COOLER">COOLER</option>
           <option value="CASE">CASE</option>
@@ -77,31 +84,31 @@
 
   </div>
 
+  <!-- Inventory Table -->
   <div class="table-wrapper">
     <table class="modern-table">
-
       <thead>
       <tr class="header-row">
-        <th class="header-cell">Name</th>
-        <th class="header-cell">Category</th>
-        <th class="header-cell">Manufacturer</th>
-        <th class="header-cell">Price</th>
-        <th class="header-cell">Quantity</th>
-        <th class="header-cell">Actions</th>
+        <th class="header-cell" scope="col">Name</th>
+        <th class="header-cell" scope="col">Category</th>
+        <th class="header-cell" scope="col">Manufacturer</th>
+        <th class="header-cell" scope="col">Price</th>
+        <th class="header-cell" scope="col">Quantity</th>
+        <th class="header-cell" scope="col">Actions</th>
       </tr>
       </thead>
 
       <tbody>
-
       @for (part of pcParts(); track part.id) {
-
       <tr class="data-row">
 
         @if (editingPart?.id === part.id) {
 
+        <!-- Editing Mode -->
         <td class="data-cell">
           <input
             [(ngModel)]="editingPart!.name"
+            aria-label="Edit part name"
             name="edit-name"
             type="text"
           />
@@ -110,6 +117,7 @@
         <td class="data-cell">
           <select
             [(ngModel)]="editingPart!.category"
+            aria-label="Edit category"
             name="edit-category"
           >
             <option value="CPU">CPU</option>
@@ -126,6 +134,7 @@
         <td class="data-cell">
           <input
             [(ngModel)]="editingPart!.manufacturer"
+            aria-label="Edit manufacturer"
             name="edit-manufacturer"
             type="text"
           />
@@ -134,7 +143,10 @@
         <td class="data-cell">
           <input
             [(ngModel)]="editingPart!.price"
+            aria-label="Edit price"
+            min="0"
             name="edit-price"
+            step="0.01"
             type="number"
           />
         </td>
@@ -142,7 +154,10 @@
         <td class="data-cell">
           <input
             [(ngModel)]="editingPart!.quantity"
+            aria-label="Edit quantity"
+            min="0"
             name="edit-quantity"
+            step="1"
             type="number"
           />
         </td>
@@ -150,7 +165,7 @@
         <td class="data-cell actions-cell">
           <button
             (click)="saveEditing()"
-            class="action-button edit-button"
+            class="action-button save-button"
             type="button"
           >
             Save
@@ -167,14 +182,32 @@
 
         } @else {
 
-        <td class="data-cell">{{ part.name }}</td>
-        <td class="data-cell">{{ part.category }}</td>
-        <td class="data-cell">{{ part.manufacturer }}</td>
-        <td class="data-cell price-cell">${{ part.price }}</td>
-        <td class="data-cell quantity-cell">{{ part.quantity }}</td>
+        <!-- Normal Display Mode -->
+        <td class="data-cell part-name">
+          {{ part.name }}
+        </td>
+
+        <td class="data-cell">
+                <span class="category-badge">
+                  {{ part.category }}
+                </span>
+        </td>
+
+        <td class="data-cell">
+          {{ part.manufacturer }}
+        </td>
+
+        <td class="data-cell price-cell">
+          {{ part.price | currency:'USD':'symbol':'1.2-2' }}
+        </td>
+
+        <td class="data-cell quantity-cell">
+                <span class="quantity-badge">
+                  {{ part.quantity }}
+                </span>
+        </td>
 
         <td class="data-cell actions-cell">
-
           <button
             (click)="startEditing(part)"
             class="action-button edit-button"
@@ -200,18 +233,19 @@
           </button>
 
           @if (restockPartId === part.id) {
-
           <input
             [(ngModel)]="restockQuantity"
+            aria-label="Restock quantity"
             class="restock-input"
             min="1"
             placeholder="Quantity"
+            step="1"
             type="number"
           />
 
           <button
             (click)="confirmRestock()"
-            class="action-button confirm-button"
+            class="action-button save-button"
             type="button"
           >
             Confirm
@@ -224,20 +258,14 @@
           >
             Cancel
           </button>
-
           }
-
         </td>
-
         }
 
       </tr>
-
       } @empty {
-
       <tr>
         <td class="empty-state" colspan="6">
-
           <div class="empty-state-content">
                 <span class="empty-state-title">
                   No PC parts found
@@ -247,14 +275,10 @@
                   Add a PC part or try changing your filters.
                 </span>
           </div>
-
         </td>
       </tr>
-
       }
-
       </tbody>
-
     </table>
   </div>
 </div>

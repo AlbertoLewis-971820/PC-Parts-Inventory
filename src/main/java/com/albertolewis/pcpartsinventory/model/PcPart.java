@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 public class PcPart {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User owner;
 

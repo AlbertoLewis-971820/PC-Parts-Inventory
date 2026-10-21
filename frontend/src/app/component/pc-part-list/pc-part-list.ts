@@ -5,11 +5,12 @@ import { AuthService } from '../../services/auth-service';
 import { Component, OnInit } from '@angular/core';
 import { signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CurrencyPipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-pc-part-list',
-  imports: [FormsModule],
+  imports: [FormsModule, CurrencyPipe],
   templateUrl: './pc-part-list.html',
   styleUrl: './pc-part-list.css',
 })
@@ -197,9 +198,20 @@ searchLowStock(): void {
   });
 }
 
+
 deletePcPart(id: number | undefined): void {
   if (id === undefined) {
     console.error('Invalid part ID');
+    return;
+  }
+
+  const part = this.pcParts().find(part => part.id === id);
+
+  const confirmed = window.confirm(
+    `Are you sure you want to delete "${part?.name ?? 'this PC part'}"?\n\nThis action cannot be undone.`
+  );
+
+  if (!confirmed) {
     return;
   }
 
@@ -208,6 +220,7 @@ deletePcPart(id: number | undefined): void {
       console.log('Part deleted:', id);
 
       const currentParts = this.pcParts();
+
       this.pcParts.set(
         currentParts.filter(part => part.id !== id)
       );
@@ -217,6 +230,7 @@ deletePcPart(id: number | undefined): void {
     }
   });
 }
+
 
   ngOnInit(): void {
     this.pcPartService.getAllPcParts().subscribe(
